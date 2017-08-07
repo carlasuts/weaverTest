@@ -270,10 +270,10 @@ public class JavaToJason {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				cInfPatDat.setInfTime(rs.getString(""));
-				cInfPatDat.setInfSeq(Integer.valueOf(rs.getString("")));
-				cInfPatDat.setMatnr(rs.getString(""));
-				cInfPatDat.setWerks(rs.getString(""));
+				cInfPatDat.setInfTime(rs.getString("INF_TIME"));
+				cInfPatDat.setInfSeq(Integer.valueOf(rs.getString("INF_SEQ")));
+				cInfPatDat.setMatnr(rs.getString("MATNR"));
+				cInfPatDat.setWerks(rs.getString("WERKS"));
 				cInfPatDat.setStlan(rs.getString(""));
 				cInfPatDat.setStlal(rs.getString(""));
 				cInfPatDat.setPlnnr(rs.getString(""));
@@ -286,6 +286,29 @@ public class JavaToJason {
 				cInfPatDat.setAlprf(rs.getString(""));
 				cInfPatDat.setAlpst(rs.getString(""));
 				cInfPatDat.setEwahr(rs.getString(""));
+				cInfPatDat.setItsob(rs.getString(""));
+				cInfPatDat.setLgort(rs.getString(""));
+				cInfPatDat.setSanka(rs.getString(""));
+				cInfPatDat.setReadFlag(rs.getString(""));
+				cInfPatDat.setInfMsg(rs.getString(""));
+				cInfPatDat.setInfFlag(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setCmf1(rs.getString(""));
+				cInfPatDat.setDeleteFlag(rs.getString(""));
+				cInfPatDat.setCreateTime(rs.getString(""));
+				cInfPatDat.setCreateUserId(rs.getString(""));
+				cInfPatDat.setUpdateTime(rs.getString(""));
+				cInfPatDat.setUpdateUserId(rs.getString(""));
+				cInfPatDat.setDeleteTime(rs.getString(""));
+				cInfPatDat.setDeleteUserId(rs.getString(""));
 			}
 			req.put("message", message);
 			System.out.println(req);
