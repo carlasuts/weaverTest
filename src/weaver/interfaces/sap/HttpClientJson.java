@@ -1,7 +1,5 @@
 package weaver.interfaces.sap;
 
-import java.util.Date;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
@@ -16,15 +14,12 @@ public class HttpClientJson {
 		try {
 			// post.setRequestHeader("User-Agent",
 			// "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0");
-			final RequestEntity re = new StringRequestEntity(str,
-					"application/json", "utf-8");
+			final RequestEntity re = new StringRequestEntity(str, "application/json", "utf-8");
 			post.setRequestEntity(re);
 			client.executeMethod(post);
 			System.out.println(str);
-			System.out.println("Access System authenticate, Status: "
-					+ post.getStatusCode());
-			System.out.println("Access System authenticate, Response: "
-					+ post.getResponseBodyAsString());
+			System.out.println("Access System authenticate, Status: " + post.getStatusCode());
+			System.out.println("Access System authenticate, Response: " + post.getResponseBodyAsString());
 			return post.getResponseBodyAsString();
 		} catch (final Exception e) {
 			e.printStackTrace();

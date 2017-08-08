@@ -316,7 +316,7 @@ public class JavaToJason {
 				cInfPatDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfPatDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
 				cinfPatDatList.add(cInfPatDat);
-				message.put("cinfPatDatList", cinfPatDatList);
+				message.put("cInfPatDatList", cinfPatDatList);
 			}
 			sql = "select count(*) as length from cinfflwdat where requestid = 161822";// 获取当前requestID共有多少条记录
 			stmt = conn.createStatement();
@@ -377,7 +377,7 @@ public class JavaToJason {
 				cInfFlwDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfFlwDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
 				cinfFlwDatList.add(cInfFlwDat);
-				message.put("cinfFlwDatList", cinfFlwDatList);
+				message.put("cInfFlwDatList", cinfFlwDatList);
 			}
 			sql = "select count(*) as length from cinfbomdat where requestid = 161822";// 获取当前requestID共有多少条记录
 			stmt = conn.createStatement();
@@ -422,18 +422,13 @@ public class JavaToJason {
 				cInfBomDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfBomDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
 				cinfBomDatList.add(cInfBomDat);
-				message.put("cinfBomDatList", cinfBomDatList);
+				message.put("cInfBomDatList", cinfBomDatList);
 			}
 			req.put("message", message);
 			System.out.println(req);
-			String theString = req.toString();
-			theString = theString.replace("null", "\" \"");
-			theString = theString.replace(" ", "\b");
-			System.out.println(theString);
-			// String retSrcs =
-			// HttpClientJson.readInterfacePost("http://172.16.60.96:8099/MesWebService/req",
-			// theString);
-			// System.out.println("retSrcs" + retSrcs);
+			String retSrcs = HttpClientJson.readInterfacePost("http://172.16.60.96:8099/MesWebService/req",
+					req.toString());
+			System.out.println("retSrcs" + retSrcs);
 			// HttpPost postMethod = new
 			// HttpPost("http://172.16.60.96:8099/MesWebService/req");
 			// StringEntity SS = new StringEntity(theString);
