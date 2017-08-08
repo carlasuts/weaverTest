@@ -13,6 +13,15 @@ import weaver.interfaces.entity.CInfPatDat;
 import weaver.interfaces.entity.CInfSpeDat;
 import weaver.interfaces.sap.HttpClientJson;
 
+/**
+ * JavaToJason.java
+ * 
+ * 2017-08-08
+ * 
+ * @author zong.yq
+ * 
+ * java转json对象测试类
+ */
 public class JavaToJason {
 
 	public static void main(String[] args) {
@@ -40,12 +49,6 @@ public class JavaToJason {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@172.16.20.6:1521:RPTDB", username,
 					password);
-			sql = "select count(*) as length from cinfspedat where requestid = 161822";// 获取当前requestID共有多少条记录
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			rs.next();
-			int length = Integer.valueOf(rs.getString("length"));
-			System.out.println(length);
 			sql = "select * from cinfspedat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -266,12 +269,6 @@ public class JavaToJason {
 				cInfSpeDatList.add(cInfSpeDat);
 				message.put("cInfSpeDatList", cInfSpeDatList);
 			}
-			sql = "select count(*) as length from cinfpatdat where requestid = 161822";// 获取当前requestID共有多少条记录
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			rs.next();
-			length = Integer.valueOf(rs.getString("length"));
-			System.out.println(length);
 			sql = "select * from cinfpatdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -318,12 +315,6 @@ public class JavaToJason {
 				cinfPatDatList.add(cInfPatDat);
 				message.put("cInfPatDatList", cinfPatDatList);
 			}
-			sql = "select count(*) as length from cinfflwdat where requestid = 161822";// 获取当前requestID共有多少条记录
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			rs.next();
-			length = Integer.valueOf(rs.getString("length"));
-			System.out.println(length);
 			sql = "select * from cinfflwdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -379,12 +370,6 @@ public class JavaToJason {
 				cinfFlwDatList.add(cInfFlwDat);
 				message.put("cInfFlwDatList", cinfFlwDatList);
 			}
-			sql = "select count(*) as length from cinfbomdat where requestid = 161822";// 获取当前requestID共有多少条记录
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			rs.next();
-			length = Integer.valueOf(rs.getString("length"));
-			System.out.println(length);
 			sql = "select * from cinfbomdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
