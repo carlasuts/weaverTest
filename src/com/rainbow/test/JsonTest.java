@@ -17,9 +17,6 @@ public class JsonTest {
 			JSONObject message = new JSONObject();
 			JSONObject shell = new JSONObject();
 			List<JSONObject> cInfSpeDatList = new ArrayList<JSONObject>();
-			List<JSONObject> cInfPatDatList = new ArrayList<JSONObject>();
-			List<JSONObject> cInfFlwDatList = new ArrayList<JSONObject>();
-			List<JSONObject> cInfBomDatList = new ArrayList<JSONObject>();
 			/**
 			 * SPE
 			 */
@@ -235,10 +232,8 @@ public class JsonTest {
 			System.out.println("message--" + message);
 			req.put("message", message);
 			System.out.println("req--" + req);
-			String retSrcs = HttpClientJson.readInterfacePost(url,
-					req.toString());
-			System.out.println("req.toString()--" + req.toString());
-
+			String retSrcs = HttpClientJson.readInterfacePost(url, req.toString());
+			System.out.println(retSrcs);
 			// shell.put("infTime", " ");
 			// shell.put("infSeq", String.valueOf(2));
 			// shell.put("matnr", " ");

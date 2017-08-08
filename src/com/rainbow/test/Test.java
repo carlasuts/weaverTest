@@ -44,7 +44,7 @@ public class Test {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@172.16.20.6:1521:RPTDB", username,
 					password);
-			sql = "select * from cinfspedat where requestid = 161816";
+			sql = "select * from cinfspedat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -265,7 +265,7 @@ public class Test {
 				json = JSONArray.fromObject(cInfSpeDatList);
 				message.put("cInfSpeDatList", json);
 			}
-			sql = "select * from cinfpatdat where requestid = 161816";
+			sql = "select * from cinfpatdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -312,7 +312,7 @@ public class Test {
 				json = JSONArray.fromObject(cInfPatDatList);
 				message.put("cInfPatDatList", json);
 			}
-			sql = "select * from cinfflwdat where requestid = 161816";
+			sql = "select * from cinfflwdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -368,7 +368,7 @@ public class Test {
 				json = JSONArray.fromObject(cInfFlwDatList);
 				message.put("cInfFlwDatList", json);
 			}
-			sql = "select * from cinfbomdat where requestid = 161816";
+			sql = "select * from cinfbomdat where requestid = 161822";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -409,7 +409,6 @@ public class Test {
 				message.put("cInfBomDatList", json);
 			}
 			req.put("message", message);
-//			System.out.println(req);
 			String theString = req.toString().replace("null", "\" \"");
 			System.out.println(theString);
 			String retSrcs = HttpClientJson.readInterfacePost("http://172.16.60.96:8099/MesWebService/req",
@@ -417,7 +416,7 @@ public class Test {
 			System.out.println("retSrcs" + retSrcs);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} // classLoader,加载对应驱动
+		}
 	}
 
 }
