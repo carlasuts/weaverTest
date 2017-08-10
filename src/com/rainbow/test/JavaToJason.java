@@ -49,7 +49,7 @@ public class JavaToJason {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@172.16.20.6:1521:RPTDB", username,
 					password);
-			sql = "select * from cinfspedat where requestid = 161822";
+			sql = "select * from cinfspedat where requestid = 161885";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -270,7 +270,7 @@ public class JavaToJason {
 				cInfSpeDatList.add(json);
 				message.put("cInfSpeDatList", cInfSpeDatList);
 			}
-			sql = "select * from cinfpatdat where requestid = 161822";
+			sql = "select * from cinfpatdat where requestid = 161885";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -317,7 +317,7 @@ public class JavaToJason {
 				cinfPatDatList.add(json);
 				message.put("cInfPatDatList", cinfPatDatList);
 			}
-			sql = "select * from cinfflwdat where requestid = 161822";
+			sql = "select * from cinfflwdat where requestid = 161885";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -374,7 +374,7 @@ public class JavaToJason {
 				cinfFlwDatList.add(json);
 				message.put("cInfFlwDatList", cinfFlwDatList);
 			}
-			sql = "select * from cinfbomdat where requestid = 161822";
+			sql = "select * from cinfbomdat where requestid = 161885";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
