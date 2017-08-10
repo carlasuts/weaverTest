@@ -23,18 +23,27 @@ public class CINFBOMDAT {
 		List<Map<String, String>> loglist = new ArrayList<Map<String, String>>();
 		Property[] Property = maintableinfo.getProperty();
 
+		RecordSet rs = new RecordSet();
 		String PRODUCTMATERIALCODE = "";
 		String PLANT = "";       
 		String ROUTERCODE = "";
 		String GROUPCOUNT = "";
 		String SEQUENCE = "";
 		String USAGE = "";
+		String INF_TIME = "";
 		java.util.Date date = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
 				"yyyyMMddHHmmss");
 		String CREATE_TIME = sdf.format(date);
 		String UPDATE_TIME = sdf.format(date);
-		String INF_TIME = sdf.format(date);
+		
+		String sql = "";
+		sql = "select * from workflow_requestbase where REQUESTID = '"+ rid +"'";
+		rs.executeSql(sql);
+		rs.next();
+		INF_TIME = rs.getString("CREATEDATE")+ " " + rs.getString("CREATETIME");
+		
+		//String INF_TIME = sdf.format(date);
 
 		String id;
 		String re;

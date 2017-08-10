@@ -14,7 +14,7 @@ public class HttpClientJson {
 		try {
 			// post.setRequestHeader("User-Agent",
 			// "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0");
-			final RequestEntity re = new StringRequestEntity(str, "application/json", "utf-8");
+			final RequestEntity re = new StringRequestEntity(str, "application/json", "UTF-8");
 			post.setRequestEntity(re);
 			client.executeMethod(post);
 			System.out.println(str);

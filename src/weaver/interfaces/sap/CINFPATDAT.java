@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import weaver.conn.RecordSet;
 import weaver.general.Util;
 import weaver.soa.workflow.request.Cell;
 import weaver.soa.workflow.request.DetailTable;
@@ -34,7 +35,13 @@ public class CINFPATDAT {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String CREATE_TIME = sdf.format(date);
 		String UPDATE_TIME = sdf.format(date);
-		String INF_TIME = sdf.format(date);
+		
+		RecordSet rs = new RecordSet();
+		String sql = "";
+		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
+		rs.executeSql(sql);
+		rs.next();
+		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
 
 		String id;
 		String re;

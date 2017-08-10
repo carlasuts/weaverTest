@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weaver.conn.RecordSet;
 import weaver.general.Util;
 import weaver.soa.workflow.request.Cell;
 import weaver.soa.workflow.request.DetailTable;
@@ -16,7 +17,7 @@ public class CINFFLWDAT {
 
 	private String logtablename = "CINFFLWDAT";
 
-	public void setcinfflwdat(DetailTable dt, MainTableInfo maintableinfo,String rid, String creator) {
+	public void setcinfflwdat(DetailTable dt, MainTableInfo maintableinfo, String rid, String creator) {
 		List<Map<String, String>> loglist = new ArrayList<Map<String, String>>();
 		Property[] Property = maintableinfo.getProperty();
 
@@ -69,6 +70,13 @@ public class CINFFLWDAT {
 		String udpatetime = sdf.format(date);
 		String createtime = sdf.format(date);
 
+		RecordSet rs = new RecordSet();
+		String sql = "";
+		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
+		rs.executeSql(sql);
+		rs.next();
+		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
+
 		// 明细
 		String ITEMNO = "";
 		String OPER = "";
@@ -113,7 +121,7 @@ public class CINFFLWDAT {
 			Map<String, String> logmap = new HashMap<String, String>();
 			logmap.put("requestid", rid);
 			logmap.put("nodeid", "");
-			logmap.put("inf_time", udpatetime);
+			logmap.put("inf_time", INF_TIME);
 			if (PRODUCTMATERIALCODE1.substring(0, 1).equals("A")) {
 				logmap.put("inf_seq", String.valueOf(j + 1));
 			} else if (PRODUCTMATERIALCODE1.substring(0, 1).equals("T")) {

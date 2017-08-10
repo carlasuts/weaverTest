@@ -20,7 +20,7 @@ import weaver.interfaces.sap.HttpClientJson;
  * 
  * @author zong.yq
  * 
- * java转json对象测试类
+ *         java转json对象测试类
  */
 public class JavaToJason {
 
@@ -40,12 +40,12 @@ public class JavaToJason {
 		JSONArray cinfPatDatList = new JSONArray();
 		JSONArray cinfFlwDatList = new JSONArray();
 		JSONArray cinfBomDatList = new JSONArray();
+		JSONObject json = new JSONObject();
 		JSONObject req = new JSONObject();
 		JSONObject message = new JSONObject();
+
 		try {
-			req.put("fromSystem", "OA");
-			req.put("functionName", "MES_UPLOADMASTERDATA");
-			req.put("token", "OATESTTOKEN");
+
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@172.16.20.6:1521:RPTDB", username,
 					password);
@@ -266,7 +266,8 @@ public class JavaToJason {
 				cInfSpeDat.setLabel28(rs.getString("LABEL28"));
 				cInfSpeDat.setLabel29(rs.getString("LABEL29"));
 				cInfSpeDat.setLabel30(rs.getString("LABEL30"));
-				cInfSpeDatList.add(cInfSpeDat);
+				json = JSONObject.fromObject(cInfSpeDat);
+				cInfSpeDatList.add(json);
 				message.put("cInfSpeDatList", cInfSpeDatList);
 			}
 			sql = "select * from cinfpatdat where requestid = 161822";
@@ -312,7 +313,8 @@ public class JavaToJason {
 				cInfPatDat.setUpdateUserId(rs.getString("UPDATE_USER_ID"));
 				cInfPatDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfPatDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
-				cinfPatDatList.add(cInfPatDat);
+				json = JSONObject.fromObject(cInfPatDat);
+				cinfPatDatList.add(json);
 				message.put("cInfPatDatList", cinfPatDatList);
 			}
 			sql = "select * from cinfflwdat where requestid = 161822";
@@ -326,7 +328,8 @@ public class JavaToJason {
 				cInfFlwDat.setPlnnr(rs.getString("PLNNR"));
 				cInfFlwDat.setPlnal(rs.getString("PLNAL"));
 				cInfFlwDat.setPlnfl(rs.getString("PLNFL"));
-				cInfFlwDat.setVornr(rs.getString("VORNR"));
+				cInfFlwDat.setVornr(
+						("00" + rs.getString("VORNR")).substring(("00" + rs.getString("VORNR")).length() - 4));
 				cInfFlwDat.setArbpl(rs.getString("ARBPL"));
 				cInfFlwDat.setSteus(rs.getString("STEUS"));
 				cInfFlwDat.setKtsch(rs.getString("KTSCH"));
@@ -367,7 +370,8 @@ public class JavaToJason {
 				cInfFlwDat.setUpdateUserId(rs.getString("UPDATE_USER_ID"));
 				cInfFlwDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfFlwDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
-				cinfFlwDatList.add(cInfFlwDat);
+				json = JSONObject.fromObject(cInfFlwDat);
+				cinfFlwDatList.add(json);
 				message.put("cInfFlwDatList", cinfFlwDatList);
 			}
 			sql = "select * from cinfbomdat where requestid = 161822";
@@ -381,7 +385,8 @@ public class JavaToJason {
 				cInfBomDat.setPlnnr(rs.getString("PLNNR"));
 				cInfBomDat.setPlnal(rs.getString("PLNAL"));
 				cInfBomDat.setPlnfl(rs.getString("PLNFL"));
-				cInfBomDat.setVornr(rs.getString("VORNR"));
+				cInfBomDat.setVornr(
+						("00" + rs.getString("VORNR")).substring(("00" + rs.getString("VORNR")).length() - 4));
 				cInfBomDat.setIdnrk(rs.getString("IDNRK"));
 				cInfBomDat.setPosnr(rs.getString("POSNR"));
 				cInfBomDat.setStlan(rs.getString("STLAN"));
@@ -406,23 +411,21 @@ public class JavaToJason {
 				cInfBomDat.setUpdateUserId(rs.getString("UPDATE_USER_ID"));
 				cInfBomDat.setDeleteTime(rs.getString("DELETE_TIME"));
 				cInfBomDat.setDeleteUserId(rs.getString("DELETE_USER_ID"));
-				cinfBomDatList.add(cInfBomDat);
+				json = JSONObject.fromObject(cInfBomDat);
+				cinfBomDatList.add(json);
 				message.put("cInfBomDatList", cinfBomDatList);
 			}
 			req.put("message", message);
-			System.out.println(req);
-			String retSrcs = HttpClientJson.readInterfacePost("http://172.16.60.96:8099/MesWebService/req",
-					req.toString());
+			req.put("fromSystem", "OA");
+			req.put("functionName", "MES_UPLOADMASTERDATA");
+			req.put("token", "OATESTTOKEN");
+			String theString = req.toString().replace("null", "\" \"");
+			String retSrcs = HttpClientJson.readInterfacePost("http://172.16.60.96:8099/MesWebService/req", theString);
 			System.out.println("retSrcs" + retSrcs);
-			// HttpPost postMethod = new
-			// HttpPost("http://172.16.60.96:8099/MesWebService/req");
-			// StringEntity SS = new StringEntity(theString);
-			// postMethod.setEntity(SS);
-			// HttpResponse resps = new DefaultHttpC lient().execute(postMethod);
-			// System.out.println(resps);
+			System.out.println(theString);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} // classLoader,加载对应驱动
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
 import weaver.general.Util;
 import weaver.soa.workflow.request.Cell;
@@ -14,11 +15,6 @@ import weaver.soa.workflow.request.DetailTable;
 import weaver.soa.workflow.request.MainTableInfo;
 import weaver.soa.workflow.request.Property;
 import weaver.soa.workflow.request.Row;
-import weaver.conn.*;
-import weaver.general.TimeUtil;
-import weaver.general.Util;
-import weaver.interfaces.workflow.action.Action;
-import weaver.soa.workflow.request.RequestInfo;
 
 /**
  */
@@ -42,12 +38,17 @@ public class CINFSPEDAT {
 		insertDetail(dt, rid, loglist, mainMap);
 		// 主表
 		Map<String, String> logmap = new HashMap<String, String>();
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		String time14 = sdf.format(now);
+		
+		RecordSet rs = new RecordSet();
+		String sql = "";
+		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
+		rs.executeSql(sql);
+		rs.next();
+		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
+		
 		logmap.put("REQUESTID", rid);
 		logmap.put("NODEID", "200");
-		logmap.put("INF_TIME", time14);
+		logmap.put("INF_TIME", INF_TIME);
 		logmap.put("INF_SEQ", "10001");// 序号
 		logmap.put("FACTORY", mainMap.get("PLANT"));
 		logmap.put("MAT_ID", mainMap.get("PRODUCTMATERIALCODE"));
