@@ -40,8 +40,9 @@ public class PostTest implements Action {
 
 	public void oaToMes(RequestInfo request) {
 		String requestId = request.getRequestid();
+		baseBean.writeLog("当前流程的requestId" + requestId);
 		try {
-			sql = "select * from cinfspedat where requestid = " + requestId;// 获取当前的requestID
+			sql = "select * from cinfspedat where requestid = " + requestId;
 			rs.execute(sql);
 			while (rs.next()) {
 				cInfSpeDat.setInfTime(rs.getString("INF_TIME"));
