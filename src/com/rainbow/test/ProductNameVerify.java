@@ -34,7 +34,8 @@ public class ProductNameVerify implements Action {
 
 		try {
 
-			String rmiurl = baseBean.getPropValue("RMIService", "rmiurl");
+			String rmiurl = baseBean.getPropValue("RMIService", "rmiurl");// 这边似乎有问题
+			baseBean.writeLog("rmiurl:" + rmiurl);
 			sql = "select * from formtable_main_" + formId + " where requestid = " + rid;
 			baseBean.writeLog("从formtable_main_" + formId + "查询数据" + sql);
 			rs.executeSql(sql);
