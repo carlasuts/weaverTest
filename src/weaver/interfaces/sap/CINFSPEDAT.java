@@ -19,12 +19,11 @@ import weaver.soa.workflow.request.Row;
 /**
  */
 public class CINFSPEDAT {
-
 	private String logtablename = "CINFSPEDAT";
+	BaseBean bb = new BaseBean();
 
 	// 芯片
-	public void insert(DetailTable dt, String rid, MainTableInfo maintableinfo,
-			String creator) {
+	public void insert(DetailTable dt, String rid, MainTableInfo maintableinfo, String creator) {
 		List<Map<String, String>> loglist = new ArrayList<Map<String, String>>();
 		Property[] Property = maintableinfo.getProperty();
 		Map<String, String> mainMap = new HashMap<String, String>();
@@ -32,20 +31,28 @@ public class CINFSPEDAT {
 			if (p.getValue().isEmpty()) {
 				mainMap.put(p.getName(), " ");
 			} else {
+				bb.writeLog(p.getName());
+				bb.writeLog(p.getValue());
 				mainMap.put(p.getName().toUpperCase(), p.getValue());
 			}
 		}
-		insertDetail(dt, rid, loglist, mainMap);
+
+		// T料号不插入芯片信息
+		if (mainMap.get("PRODUCTMATERIALCODE").substring(0, 1).equals("A")) {
+			insertDetail(dt, rid, loglist, mainMap);
+		}
+
 		// 主表
 		Map<String, String> logmap = new HashMap<String, String>();
-		
+
 		RecordSet rs = new RecordSet();
 		String sql = "";
 		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
 		rs.executeSql(sql);
 		rs.next();
-		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
-		
+		String INF_TIME = rs.getString("CREATEDATE") + rs.getString("CREATETIME");
+		INF_TIME = INF_TIME.replace("-", "").replace(":", "");
+
 		logmap.put("REQUESTID", rid);
 		logmap.put("NODEID", "200");
 		logmap.put("INF_TIME", INF_TIME);
@@ -100,7 +107,7 @@ public class CINFSPEDAT {
 		logmap.put("LABLE17", mainMap.get("LABEL17"));
 		logmap.put("LABLE18", mainMap.get("LABEL18"));
 		logmap.put("LABLE19", mainMap.get("LABEL19"));
-		logmap.put("LABLE20", mainMap.get(" "));//LABEL120
+		logmap.put("LABLE20", mainMap.get(" "));// LABEL120
 		logmap.put("MARK1", mainMap.get("MARK1"));
 		logmap.put("MARK2", mainMap.get("MARK2"));
 		logmap.put("MARK3", mainMap.get("MARK3"));
@@ -148,7 +155,12 @@ public class CINFSPEDAT {
 			logmap.put("INSTRUCTION3", mainMap.get("INSTRUCTION3ASSY"));
 			logmap.put("PRIMARY_TCARD", mainMap.get("PRIMARYTCARDASSY"));
 		} else if (mainMap.get("PLANT").equals("TEST")) {
-			logmap.put("CUST_MAT_ID", mainMap.get("TESTCUSTOMERMTRLCODE"));
+			// 测试客户品名有值取测试客户品名 无值取客户品名
+			if (!mainMap.get("TESTCUSTOMERMTRLCODE").equals(" ")) {
+				logmap.put("CUST_MAT_ID", mainMap.get("TESTCUSTOMERMTRLCODE"));
+			} else {
+				logmap.put("CUST_MAT_ID", mainMap.get("ASSYCUSTOMERMTRLCODE"));
+			}
 			logmap.put("INSTRUCTION2", mainMap.get("INSTRUCTION2TEST"));
 			logmap.put("INSTRUCTION3", mainMap.get("INSTRUCTION3TEST"));
 			logmap.put("PRIMARY_TCARD", mainMap.get("PRIMARYTCARDTEST"));
@@ -158,8 +170,8 @@ public class CINFSPEDAT {
 	}
 
 	// 芯片
-	private void insertDetail(DetailTable dt, String rid,
-			List<Map<String, String>> loglist, Map<String, String> mainMap) {
+	private void insertDetail(DetailTable dt, String rid, List<Map<String, String>> loglist,
+			Map<String, String> mainMap) {
 		Row[] s = dt.getRow();
 		BaseBean bb = new BaseBean();
 		for (int j = 0; j < s.length; j++) {
@@ -216,7 +228,7 @@ public class CINFSPEDAT {
 			logmap.put("INFO2", mainMap.get("INFORMATION2"));
 			logmap.put("INFO3", mainMap.get("INFORMATION3"));
 			logmap.put("INFO4", mainMap.get("INFORMATION4"));
-			logmap.put("INFO5", mainMap.get(" "));//INFORMATION5
+			logmap.put("INFO5", mainMap.get(" "));// INFORMATION5
 			logmap.put("LABLE1", mainMap.get("LABEL1"));
 			logmap.put("LABLE2", mainMap.get("LABEL2"));
 			logmap.put("LABLE3", mainMap.get("LABEL3"));
@@ -236,7 +248,7 @@ public class CINFSPEDAT {
 			logmap.put("LABLE17", mainMap.get("LABEL17"));
 			logmap.put("LABLE18", mainMap.get("LABEL18"));
 			logmap.put("LABLE19", mainMap.get("LABEL19"));
-			logmap.put("LABLE20", mainMap.get(" "));//LABEL120
+			logmap.put("LABLE20", mainMap.get(" "));// LABEL120
 			logmap.put("MARK1", mainMap.get("MARK1"));
 			logmap.put("MARK2", mainMap.get("MARK2"));
 			logmap.put("MARK3", mainMap.get("MARK3"));
@@ -287,6 +299,7 @@ public class CINFSPEDAT {
 
 	private void writelog(List<Map<String, String>> loglist) {
 		SapLogWriter.writerlog(loglist, logtablename);
+		bb.writeLog("loglist:" + loglist);
 	}
 
 }

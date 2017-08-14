@@ -11,12 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import weaver.general.BaseBean;
+
 /**
  * Created by Administrator on 2017/2/21.
  */
 public class SapLogWriter {
 
-	public static void writerlog(List<Map<String, String>> loglist,String tablename) {
+	public static void writerlog(List<Map<String, String>> loglist, String tablename) {
 		String sql = "";
 		// BaseBean bb = new BaseBean();
 		DBUtil db = new DBUtil();
@@ -33,17 +35,10 @@ public class SapLogWriter {
 					valueString += "'" + logmap.get(key) + "',";
 				}
 				if (!"".equals(filedString)) {
-					filedString = " ("
-							+ filedString
-									.substring(0, filedString.length() - 1)
-							+ ")";
-					valueString = " ("
-							+ valueString
-									.substring(0, valueString.length() - 1)
-							+ ")";
-					sql = "insert into " + tablename + filedString + " values "
-							+ valueString;
-					// bb.writeLog("sap插入日志sql",sql);
+					filedString = " (" + filedString.substring(0, filedString.length() - 1) + ")";
+					valueString = " (" + valueString.substring(0, valueString.length() - 1) + ")";
+					sql = "insert into " + tablename + filedString + " values " + valueString;
+					// bb.writeLog("sap插入日志sql", sql);
 					System.out.println("sql" + sql);
 					ps = conn.prepareStatement(sql);
 					ps.execute();
@@ -59,7 +54,7 @@ public class SapLogWriter {
 
 	}
 
-	public static List<Map<String, String>> selectByRequestId(String tableName,String rid) {
+	public static List<Map<String, String>> selectByRequestId(String tableName, String rid) {
 		Connection conn = null;
 		Statement stmt = null;
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();

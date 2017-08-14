@@ -1,49 +1,48 @@
 package weaver.interfaces.sap;
 
-import com.sap.mw.jco.IFunctionTemplate;
-import com.sap.mw.jco.JCO;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import weaver.conn.RecordSet;
-import weaver.general.BaseBean;
 import weaver.general.Util;
-import weaver.soa.workflow.request.*;
-
-import java.text.SimpleDateFormat;
-import java.util.*;
+import weaver.soa.workflow.request.Cell;
+import weaver.soa.workflow.request.DetailTable;
+import weaver.soa.workflow.request.MainTableInfo;
+import weaver.soa.workflow.request.Property;
+import weaver.soa.workflow.request.Row;
 
 public class CINFBOMDAT {
-	private SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private BaseBean bb = new BaseBean();
 	private String logtablename = "CINFBOMDAT";
 
 	// 芯片
-	public void setcinfbomdat(DetailTable dt, String rid,
-			MainTableInfo maintableinfo, String creator) {
+	public void setcinfbomdat(DetailTable dt, String rid, MainTableInfo maintableinfo, String creator) {
 		List<Map<String, String>> loglist = new ArrayList<Map<String, String>>();
 		Property[] Property = maintableinfo.getProperty();
 
 		RecordSet rs = new RecordSet();
 		String PRODUCTMATERIALCODE = "";
-		String PLANT = "";       
+		String PLANT = "";
 		String ROUTERCODE = "";
 		String GROUPCOUNT = "";
 		String SEQUENCE = "";
 		String USAGE = "";
 		String INF_TIME = "";
 		java.util.Date date = new java.util.Date();
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-				"yyyyMMddHHmmss");
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
 		String CREATE_TIME = sdf.format(date);
 		String UPDATE_TIME = sdf.format(date);
-		
+
 		String sql = "";
-		sql = "select * from workflow_requestbase where REQUESTID = '"+ rid +"'";
+		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
 		rs.executeSql(sql);
 		rs.next();
-		INF_TIME = rs.getString("CREATEDATE")+ " " + rs.getString("CREATETIME");
-		
-		//String INF_TIME = sdf.format(date);
+		INF_TIME = rs.getString("CREATEDATE") + rs.getString("CREATETIME");
+		INF_TIME = INF_TIME.replace("-", "").replace(":", "");
+		// String INF_TIME = sdf.format(date);
 
 		String id;
 		String re;
@@ -78,7 +77,8 @@ public class CINFBOMDAT {
 		String IDNRK = "";
 		String POSNR = "";
 		String OPERITEMNO = "";
-		String NODEID="200";
+		String NODEID = "200";
+		String str = "00";
 		Row[] s = dt.getRow();// 当前明细表的所有数据,按行存储
 		for (int j = 0; j < s.length; j++) {
 			Row r = s[j];// 指定行
@@ -99,14 +99,12 @@ public class CINFBOMDAT {
 					POSNR = value;
 				}
 				if (name.equals("OPERITEMNO")) {
-					OPERITEMNO = value;
+					OPERITEMNO = (str + value).substring((str + value).length() - 4);
 				}
-
 
 			}
 			System.out.println("IDNRK;" + IDNRK);
 			System.out.println("POSNR;" + POSNR);
-
 
 			Map<String, String> logmap = new HashMap<String, String>();
 			UUID uuid = UUID.randomUUID();

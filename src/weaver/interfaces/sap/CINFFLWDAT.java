@@ -75,7 +75,8 @@ public class CINFFLWDAT {
 		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
 		rs.executeSql(sql);
 		rs.next();
-		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
+		String INF_TIME = rs.getString("CREATEDATE") + rs.getString("CREATETIME");
+		INF_TIME = INF_TIME.replace("-", "").replace(":", "");
 
 		// 明细
 		String ITEMNO = "";
@@ -84,6 +85,7 @@ public class CINFFLWDAT {
 		String WORKCENTER = "";
 		String UPH = "";
 		String RESGID = "";
+		String str = "00";
 		Row[] s = dt.getRow();
 		for (int j = 0; j < s.length; j++) {
 			Row r = s[j];// 指定行
@@ -98,7 +100,7 @@ public class CINFFLWDAT {
 					value = Util.null2String(c1.getValue());
 				}
 				if (name.equals("ITEMNO")) {
-					ITEMNO = value;
+					ITEMNO = (str + value).substring((str + value).length()-4);
 				}
 				if (name.equals("OPERADD")) {
 					OPER = value;

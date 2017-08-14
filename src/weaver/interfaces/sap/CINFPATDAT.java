@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import weaver.conn.RecordSet;
+import weaver.general.BaseBean;
 import weaver.general.Util;
 import weaver.soa.workflow.request.Cell;
 import weaver.soa.workflow.request.DetailTable;
@@ -20,9 +20,11 @@ import weaver.soa.workflow.request.Row;
 public class CINFPATDAT {
 
 	private String logtablename = "CINFPATDAT";
+	private BaseBean bb = new BaseBean();
 
 	// 芯片
 	public void insert(DetailTable dt, String rid, MainTableInfo maintableinfo, String creator) {
+		
 		List<Map<String, String>> loglist = new ArrayList<Map<String, String>>();
 		Property[] Property = maintableinfo.getProperty();
 
@@ -36,15 +38,19 @@ public class CINFPATDAT {
 		String CREATE_TIME = sdf.format(date);
 		String UPDATE_TIME = sdf.format(date);
 		
+		bb.writeLog("取时间------");
 		RecordSet rs = new RecordSet();
 		String sql = "";
 		sql = "select * from workflow_requestbase where REQUESTID = '" + rid + "'";
 		rs.executeSql(sql);
 		rs.next();
-		String INF_TIME = rs.getString("CREATEDATE") + " " + rs.getString("CREATETIME");
+		String INF_TIME = rs.getString("CREATEDATE") +  rs.getString("CREATETIME");
+		INF_TIME = INF_TIME.replace("-", "").replace(":", "");
+		bb.writeLog("inf_time:------" + INF_TIME );
 
 		String id;
 		String re;
+		bb.writeLog("取页面数据------");
 		for (int ss = 0; ss < Property.length; ++ss) {
 			re = Property[ss].getName().toUpperCase();
 			if (Util.null2String(Property[ss].getValue()).isEmpty()) {
@@ -70,12 +76,14 @@ public class CINFPATDAT {
 		String MENGE = "";
 		String MEINS = "";
 		String AUSCH = "";
-		String ALPGR = "";
-		String ALPRF = "";
-		String ALPST = "";
+		String ALPGR = "";//替代组
+		String ALPRF = "";//替代组优先级
+		String ALPST = "";//替代组策略
+		String ALPM = "";//替代组使用可能
 		String LGORT = "";
 		String SANKA = "";
 		Row[] s = dt.getRow();// 当前明细表的所有数据,按行存储
+		bb.writeLog("取明细------");
 		for (int j = 0; j < s.length; j++) {
 			Row r = s[j];// 指定行
 			Cell c[] = r.getCell();// 每行数据再按列存储
@@ -118,11 +126,12 @@ public class CINFPATDAT {
 				if (name.equals("SANKA")) {
 					SANKA = value;
 				}
+				if (name.equals("ALPM")) {
+					ALPM = value;
+				}
 			}
 
 			Map<String, String> logmap = new HashMap<String, String>();
-			UUID uuid = UUID.randomUUID();
-			System.out.println(uuid.toString().substring(0, 32));
 			logmap.put("REQUESTID", rid);
 			logmap.put("NODEID", "200");
 			logmap.put("INF_TIME", INF_TIME);
@@ -143,6 +152,7 @@ public class CINFPATDAT {
 			logmap.put("ALPGR", ALPGR);
 			logmap.put("ALPRF", ALPRF);
 			logmap.put("ALPST", ALPST);
+			logmap.put("EWAHR", ALPM);
 			logmap.put("LGORT", LGORT);
 			logmap.put("SANKA", SANKA);
 			logmap.put("DELETE_FLAG", " ");
@@ -154,16 +164,12 @@ public class CINFPATDAT {
 			logmap.put("DELETE_USER_ID", " ");
 
 			loglist.add(logmap);
-			System.out.println("开始执行-------");
-
-			System.out.println("返回数据-------");
-			// 获取返回数据
-
 		}
 		writelog(loglist);
 	}
 
 	private void writelog(List<Map<String, String>> loglist) {
+		bb.writeLog("loglist-------" + loglist);
 		SapLogWriter.writerlog(loglist, logtablename);
 
 	}
