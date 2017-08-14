@@ -405,6 +405,8 @@ public class PostTest implements Action {
 			req.put("fromSystem", "OA");
 			req.put("functionName", "MES_UPLOADMASTERDATA");
 			req.put("token", "OATESTTOKEN");
+			baseBean.writeLog("-----req-----");
+			baseBean.writeLog(req);
 			String theString = req.toString().replace("null", " ");
 			String retSrcs = HttpClientJson.readInterfacePost(url, theString);
 			baseBean.writeLog("retSrcs" + retSrcs);
