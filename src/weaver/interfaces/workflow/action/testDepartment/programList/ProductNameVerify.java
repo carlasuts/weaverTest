@@ -1,88 +1,80 @@
 package weaver.interfaces.workflow.action.testDepartment.programList;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.net.URL;
+import java.rmi.Naming;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.usermodel.Range;
-import org.apache.poi.hwpf.usermodel.Table;
-import org.apache.poi.hwpf.usermodel.TableIterator;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableCell;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import java.util.Set;
 
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
 import weaver.interfaces.workflow.action.Action;
+import weaver.interfaces.workflow.pojo.TestDepartment.programList.ProductNameVerifyPojo;
+import weaver.interfaces.workflow.util.BillUtil;
+import weaver.interfaces.workflow.util.IHello;
 import weaver.interfaces.workflow.util.ZipUtil;
 import weaver.soa.workflow.request.RequestInfo;
 
 public class ProductNameVerify implements Action {
+	private static int formId = 0;
+
+	@Override
 	public String execute(RequestInfo request) {
 
+		formId = BillUtil.getFormId(Integer.parseInt(request.getWorkflowid()));
 		BaseBean baseBean = new BaseBean();
 		RecordSet rs = new RecordSet();
+
 		String sql = "";
 		String rid = request.getRequestid();// 获取当且流程的id
 		baseBean.writeLog("**********程序开始执行**********");
 
 		try {
-			ClassLoader classloader = POIFSFileSystem.class.getClassLoader();
-			URL res = classloader
-					.getResource("org/apache/poi/poifs/filesystem/POIFSFileSystem.class");
-			String path = res.getPath();
 
-			sql = "select * from formtable_main_93 where requestid = " + rid;
-			baseBean.writeLog("从formtable_main_93查询数据" + sql);
+			String rmiurl = baseBean.getPropValue("RMIService", "rmiurl");// 这边似乎有问题
+			baseBean.writeLog("rmiurl:" + rmiurl);
+			sql = "select * from formtable_main_" + formId + " where requestid = " + rid;
+			baseBean.writeLog("从formtable_main_" + formId + "查询数据" + sql);
 			rs.executeSql(sql);
 			rs.next();
 
 			String SCWJ = rs.getString("SCWJ");// SCWJ即下面要使用的docid
-
-			// String ifIncrease = rs.getString("SFXJ");
-			//
-			// String ifRise = rs.getString("SFSB");
-			//
-			// String ifZF = rs.getString("SFZF");
-
 			// 申请类型 0:新建 1:升版 2:作废
 			String SQLX = rs.getString("SQLX");
 			baseBean.writeLog("这里是申请类型：" + SQLX);
 
-			String productNameList = "";
+			String productNameListString = "";
 
 			/**
 			 * 判断是新增还是升版 如果是新增就把XZDYPMLIST字段里的值赋给productNameList
 			 * 如果是升版就把SBDYPMLIST字段里的值赋给productNameList
 			 */
 			if (SQLX.equals("0")) { // 申请类型为新增
-				sql = "SELECT replace(XZDYPMLIST,'<br>','') as xzdypmlist FROM FORMTABLE_MAIN_93 where requestid = "
-						+ rid;
-				baseBean.writeLog("替换数据库中XZDYPMLIST的<br>:" + sql);
+				sql = "SELECT replace(XZDYPMLIST,'&nbsp;','') as xzdypmlist FROM formtable_main_" + formId
+						+ " where requestid = " + rid;
+				baseBean.writeLog("替换数据库中XZDYPMLIST的空格:" + sql);
 				String xjProductNameList = rs.getString("xzdypmlist");
 				rs.executeSql(sql);
 				rs.next();
-				productNameList = xjProductNameList;
+				productNameListString = xjProductNameList;
 				baseBean.writeLog("xjProductNameList" + xjProductNameList);
 			} else if (SQLX.equals("1")) {// 申请类型为升版
-				sql = "SELECT replace(SBDYPMLIST,'<br>','') as sbdypmlist FROM FORMTABLE_MAIN_93 where requestid = "
-						+ rid;
-				baseBean.writeLog("替换数据库中SBDYPMLIST的<br>:" + sql);
+				sql = "SELECT replace(SBDYPMLIST,'&nbsp;','') as sbdypmlist FROM formtable_main_" + formId
+						+ " where requestid = " + rid;
+				baseBean.writeLog("替换数据库中SBDYPMLIST的空格:" + sql);
 				String sbProductNameList = rs.getString("sbdypmlist");
 				baseBean.writeLog("ProductNameVerify sql:" + sql);
 				rs.executeSql(sql);
 				rs.next();
-				productNameList = sbProductNameList;
+				productNameListString = sbProductNameList;
 				baseBean.writeLog("sbProductNameList" + sbProductNameList);
 			} else if (SQLX.equals("2")) { // 申请类型为作废
 				return Action.SUCCESS;
 			}
-			baseBean.writeLog("替换之后的productNameList：" + productNameList);
+			baseBean.writeLog("替换之后的productNameList：" + productNameListString);
 
 			sql = "select * from DOCIMAGEFILE where docid = '" + SCWJ + "'";
 			rs.executeSql(sql);
@@ -91,19 +83,14 @@ public class ProductNameVerify implements Action {
 			String imagefileid = rs.getString("imagefileid");
 			baseBean.writeLog("imagefileid:" + imagefileid);
 
-			String fileType = rs.getString("IMAGEFILENAME").substring(
-					rs.getString("IMAGEFILENAME").indexOf("."));
+			String fileType = rs.getString("IMAGEFILENAME").substring(rs.getString("IMAGEFILENAME").indexOf("."));
 			baseBean.writeLog("fileType:" + fileType);
 
-			sql = "select * from IMAGEFILE where imagefileid = '" + imagefileid
-					+ "'";
+			sql = "select * from IMAGEFILE where imagefileid = '" + imagefileid + "'";
 			rs.executeSql(sql);
 			rs.next();
 
 			String filerealpath = rs.getString("filerealpath");
-
-			filerealpath = "\\\\172.16.60.63\\d"
-					+ filerealpath.substring(filerealpath.indexOf(":") + 1);
 
 			baseBean.writeLog("压缩包真实路径 filerealpath:" + filerealpath);
 
@@ -119,122 +106,78 @@ public class ProductNameVerify implements Action {
 			String test = unzipfilepath + fileType;
 			baseBean.writeLog("解压后文件的全路径" + test);
 
-			/**
-			 * 对附件进行读取操作和卡控操作
-			 */
-			try {
-				FileInputStream in = new FileInputStream(test);
-				// 数据库中取出来的productNameList按照<br>分割
-				String[] productName = productNameList.split("\r<br>");
-
-				int length = productName.length;
-				baseBean.writeLog("productName的长度:" + length);
-				int count = 0;
-				/**
-				 * 如果是docx结尾的word文档
-				 */
-				if (test.toLowerCase().endsWith("docx")) {
-					XWPFDocument xwpf = new XWPFDocument(in);
-					Iterator it = xwpf.getTablesIterator();
-					if (it.hasNext()) {
-						XWPFTable table = (XWPFTable) it.next();
-						List rows = table.getRows();
-						String aftersString = "";
-						for (int i = 1; i < rows.size(); i++) {
-							XWPFTableRow row = (XWPFTableRow) rows.get(i);
-							List cells = row.getTableCells();
-							XWPFTableCell cell = (XWPFTableCell) cells.get(0);
-							if (!cell.getText().trim().isEmpty()) {// 判断文档中的表格有没有空白行
-								count++;
-							}
-							aftersString = aftersString + cell.getText() + ",";
-						}
-						String[] afterList = aftersString.split(",");
-						baseBean.writeLog("附件表格变换内容:" + aftersString);
-						baseBean.writeLog("计数count:" + count);
-						for (String al : afterList) {
-							baseBean.writeLog("docx的al" + al);
-							boolean flag = false;
-							for (String pn : productName) {
-								baseBean.writeLog("docx的pn" + pn);
-								if (pn.equals(al)) {
-									flag = true;
-								}
-							}
-							if (!flag) {
-								request.getRequestManager().setMessageid("400");
-								request.getRequestManager().setMessagecontent(
-										"输入的品名和附件中的品名不符,请检查后提交");
-								sql = "UPDATE formtable_main_93 SET SFXJ=NULL,XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,SFSB=NULL,LSFJ=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,SFZF=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,PKLD=NULL where requestid ="
-										+ rid;
-								rs.execute(sql);
-								rs.next();
-								baseBean.writeLog("docx品名不符：" + sql);
-							}
-						}
-					}
-				} else {// word文档为doc结尾
-					HWPFDocument hwpf = new HWPFDocument(in);
-					Range range = hwpf.getRange();
-					TableIterator it = new TableIterator(range);
-
-					if (it.hasNext()) {
-						Table tb = it.next();
-						String aftersString = "";
-						for (int i = 1; i < tb.numRows(); i++) {
-							if (!tb.getRow(i).getCell(0).text().trim()
-									.isEmpty()) {
-								count++;
-							}
-							aftersString = aftersString
-									+ tb.getRow(i).getCell(0).text().trim()
-									+ ",";
-						}
-						baseBean.writeLog("doc" + aftersString);
-						baseBean.writeLog("doc" + productNameList);
-						String[] afterList = aftersString.split(",");
-						for (String al : afterList) {
-							baseBean.writeLog("doc的al" + al);
-							boolean flag = false;
-							for (String pn : productName) {
-								baseBean.writeLog("doc的pn" + pn);
-								if (pn.equals(al)) {
-									flag = true;
-								}
-							}
-							if (!flag) {
-								request.getRequestManager().setMessageid("401");
-								request.getRequestManager().setMessagecontent(
-										"输入的品名和附件中的品名不符,请检查后提交");
-								sql = "UPDATE formtable_main_93 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
-										+ rid;
-								rs.execute(sql);
-								rs.next();
-								baseBean.writeLog("doc品名不符：" + sql);
-							}
-						}
-					}
+			baseBean.writeLog("解压后文件的全路径");
+			baseBean.writeLog("productNameListString: " + productNameListString);
+			String[] productName = productNameListString.split("\r<br>");
+			List<String> productList = new ArrayList<String>(Arrays.asList(productName));
+			Iterator<String> it = productList.iterator();
+			while (it.hasNext()) {
+				String x = it.next();
+				if ("".equals(x)) {
+					it.remove();
 				}
-				baseBean.writeLog("这边数目怎么就不一样了");
-				baseBean.writeLog("count:" + count);
-				baseBean.writeLog("productName.length:" + productName.length);
-				if (count != productName.length) {
-					request.getRequestManager().setMessageid("402");
-					request.getRequestManager().setMessagecontent(
-							"输入的品名和附件中的品名数目不符合，请检查后提交");
-					sql = "UPDATE formtable_main_93 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
-							+ rid;
-					rs.execute(sql);
-					rs.next();
-					baseBean.writeLog("品名数目不符：" + sql);
-				}
-			} catch (Exception e) {
-				baseBean.writeLog(e.getMessage());
 			}
+			for (String string : productList) {
+				baseBean.writeLog(string);
+			}
+			Set<String> productNameSet = new HashSet<String>(productList);
+			if (productList.size() != productNameSet.size()) {
+				request.getRequestManager().setMessageid("录入内容有误");
+				request.getRequestManager().setMessagecontent("录入的品名中包含重复项");
+				throw new RuntimeException("录入的品名中包含重复项");
+			} else {
+				baseBean.writeLog("录入内容无重复项 size:" + productNameSet.size());
+			}
+
+			IHello rhello = (IHello) Naming.lookup(rmiurl);
+			baseBean.writeLog("rmiurl:" + rmiurl);
+			ProductNameVerifyPojo rmipojo = rhello.getDescsByFile(test);
+			baseBean.writeLog("全路径:" + test);
+
+			if (!rmipojo.isOk()) {
+				request.getRequestManager().setMessageid("文档有误");
+				request.getRequestManager().setMessagecontent(rmipojo.getMsg());
+				throw new RuntimeException(rmipojo.getMsg());
+			} else {
+				baseBean.writeLog("RMI正常返回");
+				Set<String> rmiproductNameSet = new HashSet<String>(rmipojo.getContent());
+				baseBean.writeLog("rmiproductNameSet.size:" + rmiproductNameSet.size());
+				if (rmiproductNameSet.size() != productNameSet.size()) {
+					baseBean.writeLog("条目数不一致");
+					baseBean.writeLog("rmiproductNameSet.size:" + rmiproductNameSet.size());
+					for (String string : rmiproductNameSet) {
+						baseBean.writeLog(string);
+					}
+					baseBean.writeLog("productNameSet.size:" + productNameSet.size());
+					for (String string : rmiproductNameSet) {
+						baseBean.writeLog(string);
+					}
+					request.getRequestManager().setMessageid("录入内容或文档有误");
+					request.getRequestManager().setMessagecontent("条目数不一致");
+					throw new RuntimeException("条目数不一致");
+				} else if (!rmiproductNameSet.equals(productNameSet)) {
+					baseBean.writeLog("内容不一致");
+					baseBean.writeLog("rmiproductNameSet content");
+					for (String string : rmiproductNameSet) {
+						baseBean.writeLog(string);
+					}
+					baseBean.writeLog("productNameSet content");
+					for (String string : rmiproductNameSet) {
+						baseBean.writeLog(string);
+					}
+					request.getRequestManager().setMessageid("录入内容或文档有误");
+					request.getRequestManager().setMessagecontent("内容不一致");
+					throw new RuntimeException("内容不一致");
+				}
+			}
+
 		} catch (Exception e) {
-			request.getRequestManager().setMessageid("403");
-			request.getRequestManager().setMessagecontent("附件只能上传一个，请检查后重新提交！");
-			sql = "UPDATE formtable_main_93 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
+			if (request.getRequestManager().getMessageid() == null) {
+				request.getRequestManager().setMessageid("Other");
+			}
+			request.getRequestManager().setMessagecontent(e.getMessage());
+			sql = "UPDATE formtable_main_" + formId
+					+ " SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
 					+ rid;
 			rs.execute(sql);
 			rs.next();
@@ -243,8 +186,7 @@ public class ProductNameVerify implements Action {
 			baseBean.writeLog("start log");
 			baseBean.writeLog("------------------------------------------------------------------------");
 			baseBean.writeLog("ProductNameVerify Message:" + e.getMessage());
-			baseBean.writeLog("ProductNameVerify StackTrace:"
-					+ e.getStackTrace());
+			baseBean.writeLog("ProductNameVerify StackTrace:" + e.getStackTrace());
 			baseBean.writeLog("------------------------------------------------------------------------");
 			baseBean.writeLog("end log");
 		}

@@ -128,8 +128,11 @@ public class ProductNameVerify implements Action {
 			} else {
 				baseBean.writeLog("录入内容无重复项 size:" + productNameSet.size());
 			}
+			
 			IHello rhello = (IHello) Naming.lookup(rmiurl);
+			baseBean.writeLog("rmiurl:" + rmiurl);
 			ProductNameVerifyPojo rmipojo = rhello.getDescsByFile(test);
+			baseBean.writeLog("全路径:" + test);
 
 			if (!rmipojo.isOk()) {
 				request.getRequestManager().setMessageid("文档有误");

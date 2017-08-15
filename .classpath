@@ -50,5 +50,6 @@
 	<classpathentry kind="lib" path="F:/jar/httpcore-4.2.1.jar"/>
 	<classpathentry kind="lib" path="F:/插件开发常用的API/poi-bin-3.17-beta1-20170701/poi-3.17-beta1/poi-3.17-beta1.jar"/>
 	<classpathentry kind="lib" path="F:/jar/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="F:/jar/jacob.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
