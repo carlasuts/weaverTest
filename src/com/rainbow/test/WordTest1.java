@@ -14,7 +14,7 @@ public class WordTest1 {
 			word.setProperty("Visible", new Variant(false));
 			word.setProperty("AutomationSecurity", new Variant(3));
 			Dispatch documents = word.getProperty("Documents").toDispatch();
-			wordDoc = Dispatch.call(documents, "Open", "F:\\(25)FT1_MT6166V_AMB_PCU_H_SMT65419_V12.doc").toDispatch();
+			wordDoc = Dispatch.call(documents, "Open", "C:\\Users\\zong.yq\\Desktop\\(25)FT1_MT6166V_AMB_PCU_H_SMT65419_V12.docx").toDispatch();
 			Dispatch tables = Dispatch.get(wordDoc, "Tables").toDispatch();
 			Dispatch table = Dispatch.call(tables, "Item", new Variant(1)).toDispatch();
 			Dispatch rows = Dispatch.get(table, "Rows").toDispatch();

@@ -19,7 +19,7 @@ import weaver.soa.workflow.request.RequestInfo;
  *         主数据从OA发送到MES
  *
  */
-public class OaToMes_MainData implements Action {
+public class OaToMes_Mat_Action implements Action {
 
 	private static final String url = "http://172.16.60.96:8099/MesWebService/req";
 	private BaseBean baseBean = new BaseBean();
