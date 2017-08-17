@@ -270,6 +270,7 @@ public class CInfSpeDatDao implements Action {
 			StringEntity SS = new StringEntity(req.toString());
 			postMethod.setEntity(SS);
 			HttpResponse resps = new DefaultHttpClient().execute(postMethod);
+			baseBean.writeLog(resps);
 		} catch (Exception e) {
 			baseBean.writeLog("start log");
 			baseBean.writeLog("------------------------------------------------------------------------");
