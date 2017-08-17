@@ -1,38 +1,29 @@
-package weaver.interfaces.entity;
+package weaver.interfaces.mes.entity;
 
 /**
  * @author zong.yq
  */
-public class CInfFlwDat {
+public class CInfPatDat {
 
 	private String infTime;
 	private Integer infSeq;
 	private String matnr;
 	private String werks;
+	private String stlan;
+	private String stlal;
 	private String plnnr;
-	private String plnal;
-	private String plnfl;
-	private String vornr;
-	private String arbpl;
-	private String steus;
-	private String ktsch;
-	private String ltxa1;
-	private String vgw01;
-	private String vgw02;
-	private String vgw03;
-	private String vgw04;
-	private String vgw05;
-	private String vgw06;
-	private String infnr;
-	private String ekorg;
-	private String sakto;
-	private String bmsch;
-	private String uemus;
-	private String minwe;
-	private String spmus;
-	private String splim;
-	private String umrez;
-	private String meinh;
+	private String posnr;
+	private String idnrk;
+	private String menge;
+	private String meins;
+	private String ausch;
+	private String alpgr;
+	private String alprf;
+	private String alpst;
+	private String ewahr;
+	private String itsob;
+	private String lgort;
+	private String sanka;
 	private String readFlag;
 	private String infMsg;
 	private String infFlag;
@@ -86,6 +77,22 @@ public class CInfFlwDat {
 		this.werks = werks;
 	}
 
+	public String getStlan() {
+		return stlan;
+	}
+
+	public void setStlan(String stlan) {
+		this.stlan = stlan;
+	}
+
+	public String getStlal() {
+		return stlal;
+	}
+
+	public void setStlal(String stlal) {
+		this.stlal = stlal;
+	}
+
 	public String getPlnnr() {
 		return plnnr;
 	}
@@ -94,188 +101,100 @@ public class CInfFlwDat {
 		this.plnnr = plnnr;
 	}
 
-	public String getPlnal() {
-		return plnal;
+	public String getPosnr() {
+		return posnr;
 	}
 
-	public void setPlnal(String plnal) {
-		this.plnal = plnal;
+	public void setPosnr(String posnr) {
+		this.posnr = posnr;
 	}
 
-	public String getPlnfl() {
-		return plnfl;
+	public String getIdnrk() {
+		return idnrk;
 	}
 
-	public void setPlnfl(String plnfl) {
-		this.plnfl = plnfl;
+	public void setIdnrk(String idnrk) {
+		this.idnrk = idnrk;
 	}
 
-	public String getVornr() {
-		return vornr;
+	public String getMenge() {
+		return menge;
 	}
 
-	public void setVornr(String vornr) {
-		this.vornr = vornr;
+	public void setMenge(String menge) {
+		this.menge = menge;
 	}
 
-	public String getArbpl() {
-		return arbpl;
+	public String getMeins() {
+		return meins;
 	}
 
-	public void setArbpl(String arbpl) {
-		this.arbpl = arbpl;
+	public void setMeins(String meins) {
+		this.meins = meins;
 	}
 
-	public String getSteus() {
-		return steus;
+	public String getAusch() {
+		return ausch;
 	}
 
-	public void setSteus(String steus) {
-		this.steus = steus;
+	public void setAusch(String ausch) {
+		this.ausch = ausch;
 	}
 
-	public String getKtsch() {
-		return ktsch;
+	public String getAlpgr() {
+		return alpgr;
 	}
 
-	public void setKtsch(String ktsch) {
-		this.ktsch = ktsch;
+	public void setAlpgr(String alpgr) {
+		this.alpgr = alpgr;
 	}
 
-	public String getLtxa1() {
-		return ltxa1;
+	public String getAlprf() {
+		return alprf;
 	}
 
-	public void setLtxa1(String ltxa1) {
-		this.ltxa1 = ltxa1;
+	public void setAlprf(String alprf) {
+		this.alprf = alprf;
 	}
 
-	public String getVgw01() {
-		return vgw01;
+	public String getAlpst() {
+		return alpst;
 	}
 
-	public void setVgw01(String vgw01) {
-		this.vgw01 = vgw01;
+	public void setAlpst(String alpst) {
+		this.alpst = alpst;
 	}
 
-	public String getVgw02() {
-		return vgw02;
+	public String getEwahr() {
+		return ewahr;
 	}
 
-	public void setVgw02(String vgw02) {
-		this.vgw02 = vgw02;
+	public void setEwahr(String ewahr) {
+		this.ewahr = ewahr;
 	}
 
-	public String getVgw03() {
-		return vgw03;
+	public String getItsob() {
+		return itsob;
 	}
 
-	public void setVgw03(String vgw03) {
-		this.vgw03 = vgw03;
+	public void setItsob(String itsob) {
+		this.itsob = itsob;
 	}
 
-	public String getVgw04() {
-		return vgw04;
+	public String getLgort() {
+		return lgort;
 	}
 
-	public void setVgw04(String vgw04) {
-		this.vgw04 = vgw04;
+	public void setLgort(String lgort) {
+		this.lgort = lgort;
 	}
 
-	public String getVgw05() {
-		return vgw05;
+	public String getSanka() {
+		return sanka;
 	}
 
-	public void setVgw05(String vgw05) {
-		this.vgw05 = vgw05;
-	}
-
-	public String getVgw06() {
-		return vgw06;
-	}
-
-	public void setVgw06(String vgw06) {
-		this.vgw06 = vgw06;
-	}
-
-	public String getInfnr() {
-		return infnr;
-	}
-
-	public void setInfnr(String infnr) {
-		this.infnr = infnr;
-	}
-
-	public String getEkorg() {
-		return ekorg;
-	}
-
-	public void setEkorg(String ekorg) {
-		this.ekorg = ekorg;
-	}
-
-	public String getSakto() {
-		return sakto;
-	}
-
-	public void setSakto(String sakto) {
-		this.sakto = sakto;
-	}
-
-	public String getBmsch() {
-		return bmsch;
-	}
-
-	public void setBmsch(String bmsch) {
-		this.bmsch = bmsch;
-	}
-
-	public String getUemus() {
-		return uemus;
-	}
-
-	public void setUemus(String uemus) {
-		this.uemus = uemus;
-	}
-
-	public String getMinwe() {
-		return minwe;
-	}
-
-	public void setMinwe(String minwe) {
-		this.minwe = minwe;
-	}
-
-	public String getSpmus() {
-		return spmus;
-	}
-
-	public void setSpmus(String spmus) {
-		this.spmus = spmus;
-	}
-
-	public String getSplim() {
-		return splim;
-	}
-
-	public void setSplim(String splim) {
-		this.splim = splim;
-	}
-
-	public String getUmrez() {
-		return umrez;
-	}
-
-	public void setUmrez(String umrez) {
-		this.umrez = umrez;
-	}
-
-	public String getMeinh() {
-		return meinh;
-	}
-
-	public void setMeinh(String meinh) {
-		this.meinh = meinh;
+	public void setSanka(String sanka) {
+		this.sanka = sanka;
 	}
 
 	public String getReadFlag() {

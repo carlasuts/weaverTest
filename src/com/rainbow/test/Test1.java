@@ -9,7 +9,7 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import weaver.interfaces.entity.CInfPatDat;
+import weaver.interfaces.mes.entity.CInfPatDat;
 import weaver.interfaces.sap.HttpClientJson;
 
 public class Test1 {

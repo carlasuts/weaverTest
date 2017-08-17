@@ -1,13 +1,14 @@
-package weaver.interfaces.sap;
+package weaver.interfaces.mes.action;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
-import weaver.interfaces.entity.CInfBomDat;
-import weaver.interfaces.entity.CInfFlwDat;
-import weaver.interfaces.entity.CInfPatDat;
-import weaver.interfaces.entity.CInfSpeDat;
+import weaver.interfaces.mes.entity.CInfBomDat;
+import weaver.interfaces.mes.entity.CInfFlwDat;
+import weaver.interfaces.mes.entity.CInfPatDat;
+import weaver.interfaces.mes.entity.CInfSpeDat;
+import weaver.interfaces.sap.HttpClientJson;
 import weaver.interfaces.workflow.action.Action;
 import weaver.soa.workflow.request.RequestInfo;
 

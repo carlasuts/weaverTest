@@ -1,9 +1,9 @@
-package weaver.interfaces.entity;
+package weaver.interfaces.mes.entity;
 
 /**
  * @author zong.yq
  */
-public class CInfBomDat {
+public class CInfFlwDat {
 
 	private String infTime;
 	private Integer infSeq;
@@ -13,10 +13,26 @@ public class CInfBomDat {
 	private String plnal;
 	private String plnfl;
 	private String vornr;
-	private String idnrk;
-	private String posnr;
-	private String stlan;
-	private String stlal;
+	private String arbpl;
+	private String steus;
+	private String ktsch;
+	private String ltxa1;
+	private String vgw01;
+	private String vgw02;
+	private String vgw03;
+	private String vgw04;
+	private String vgw05;
+	private String vgw06;
+	private String infnr;
+	private String ekorg;
+	private String sakto;
+	private String bmsch;
+	private String uemus;
+	private String minwe;
+	private String spmus;
+	private String splim;
+	private String umrez;
+	private String meinh;
 	private String readFlag;
 	private String infMsg;
 	private String infFlag;
@@ -102,36 +118,164 @@ public class CInfBomDat {
 		this.vornr = vornr;
 	}
 
-	public String getIdnrk() {
-		return idnrk;
+	public String getArbpl() {
+		return arbpl;
 	}
 
-	public void setIdnrk(String idnrk) {
-		this.idnrk = idnrk;
+	public void setArbpl(String arbpl) {
+		this.arbpl = arbpl;
 	}
 
-	public String getPosnr() {
-		return posnr;
+	public String getSteus() {
+		return steus;
 	}
 
-	public void setPosnr(String posnr) {
-		this.posnr = posnr;
+	public void setSteus(String steus) {
+		this.steus = steus;
 	}
 
-	public String getStlan() {
-		return stlan;
+	public String getKtsch() {
+		return ktsch;
 	}
 
-	public void setStlan(String stlan) {
-		this.stlan = stlan;
+	public void setKtsch(String ktsch) {
+		this.ktsch = ktsch;
 	}
 
-	public String getStlal() {
-		return stlal;
+	public String getLtxa1() {
+		return ltxa1;
 	}
 
-	public void setStlal(String stlal) {
-		this.stlal = stlal;
+	public void setLtxa1(String ltxa1) {
+		this.ltxa1 = ltxa1;
+	}
+
+	public String getVgw01() {
+		return vgw01;
+	}
+
+	public void setVgw01(String vgw01) {
+		this.vgw01 = vgw01;
+	}
+
+	public String getVgw02() {
+		return vgw02;
+	}
+
+	public void setVgw02(String vgw02) {
+		this.vgw02 = vgw02;
+	}
+
+	public String getVgw03() {
+		return vgw03;
+	}
+
+	public void setVgw03(String vgw03) {
+		this.vgw03 = vgw03;
+	}
+
+	public String getVgw04() {
+		return vgw04;
+	}
+
+	public void setVgw04(String vgw04) {
+		this.vgw04 = vgw04;
+	}
+
+	public String getVgw05() {
+		return vgw05;
+	}
+
+	public void setVgw05(String vgw05) {
+		this.vgw05 = vgw05;
+	}
+
+	public String getVgw06() {
+		return vgw06;
+	}
+
+	public void setVgw06(String vgw06) {
+		this.vgw06 = vgw06;
+	}
+
+	public String getInfnr() {
+		return infnr;
+	}
+
+	public void setInfnr(String infnr) {
+		this.infnr = infnr;
+	}
+
+	public String getEkorg() {
+		return ekorg;
+	}
+
+	public void setEkorg(String ekorg) {
+		this.ekorg = ekorg;
+	}
+
+	public String getSakto() {
+		return sakto;
+	}
+
+	public void setSakto(String sakto) {
+		this.sakto = sakto;
+	}
+
+	public String getBmsch() {
+		return bmsch;
+	}
+
+	public void setBmsch(String bmsch) {
+		this.bmsch = bmsch;
+	}
+
+	public String getUemus() {
+		return uemus;
+	}
+
+	public void setUemus(String uemus) {
+		this.uemus = uemus;
+	}
+
+	public String getMinwe() {
+		return minwe;
+	}
+
+	public void setMinwe(String minwe) {
+		this.minwe = minwe;
+	}
+
+	public String getSpmus() {
+		return spmus;
+	}
+
+	public void setSpmus(String spmus) {
+		this.spmus = spmus;
+	}
+
+	public String getSplim() {
+		return splim;
+	}
+
+	public void setSplim(String splim) {
+		this.splim = splim;
+	}
+
+	public String getUmrez() {
+		return umrez;
+	}
+
+	public void setUmrez(String umrez) {
+		this.umrez = umrez;
+	}
+
+	public String getMeinh() {
+		return meinh;
+	}
+
+	public void setMeinh(String meinh) {
+		this.meinh = meinh;
 	}
 
 	public String getReadFlag() {

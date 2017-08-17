@@ -9,8 +9,8 @@ import java.util.List;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import weaver.interfaces.entity.CInfBomDat;
-import weaver.interfaces.entity.CInfFlwDat;
+import weaver.interfaces.mes.entity.CInfBomDat;
+import weaver.interfaces.mes.entity.CInfFlwDat;
 import weaver.interfaces.sap.HttpClientJson;
 
 public class Test3 {

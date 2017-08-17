@@ -1,29 +1,22 @@
-package weaver.interfaces.entity;
+package weaver.interfaces.mes.entity;
 
 /**
  * @author zong.yq
  */
-public class CInfPatDat {
+public class CInfBomDat {
 
 	private String infTime;
 	private Integer infSeq;
 	private String matnr;
 	private String werks;
+	private String plnnr;
+	private String plnal;
+	private String plnfl;
+	private String vornr;
+	private String idnrk;
+	private String posnr;
 	private String stlan;
 	private String stlal;
-	private String plnnr;
-	private String posnr;
-	private String idnrk;
-	private String menge;
-	private String meins;
-	private String ausch;
-	private String alpgr;
-	private String alprf;
-	private String alpst;
-	private String ewahr;
-	private String itsob;
-	private String lgort;
-	private String sanka;
 	private String readFlag;
 	private String infMsg;
 	private String infFlag;
@@ -77,6 +70,54 @@ public class CInfPatDat {
 		this.werks = werks;
 	}
 
+	public String getPlnnr() {
+		return plnnr;
+	}
+
+	public void setPlnnr(String plnnr) {
+		this.plnnr = plnnr;
+	}
+
+	public String getPlnal() {
+		return plnal;
+	}
+
+	public void setPlnal(String plnal) {
+		this.plnal = plnal;
+	}
+
+	public String getPlnfl() {
+		return plnfl;
+	}
+
+	public void setPlnfl(String plnfl) {
+		this.plnfl = plnfl;
+	}
+
+	public String getVornr() {
+		return vornr;
+	}
+
+	public void setVornr(String vornr) {
+		this.vornr = vornr;
+	}
+
+	public String getIdnrk() {
+		return idnrk;
+	}
+
+	public void setIdnrk(String idnrk) {
+		this.idnrk = idnrk;
+	}
+
+	public String getPosnr() {
+		return posnr;
+	}
+
+	public void setPosnr(String posnr) {
+		this.posnr = posnr;
+	}
+
 	public String getStlan() {
 		return stlan;
 	}
@@ -91,110 +132,6 @@ public class CInfPatDat {
 
 	public void setStlal(String stlal) {
 		this.stlal = stlal;
-	}
-
-	public String getPlnnr() {
-		return plnnr;
-	}
-
-	public void setPlnnr(String plnnr) {
-		this.plnnr = plnnr;
-	}
-
-	public String getPosnr() {
-		return posnr;
-	}
-
-	public void setPosnr(String posnr) {
-		this.posnr = posnr;
-	}
-
-	public String getIdnrk() {
-		return idnrk;
-	}
-
-	public void setIdnrk(String idnrk) {
-		this.idnrk = idnrk;
-	}
-
-	public String getMenge() {
-		return menge;
-	}
-
-	public void setMenge(String menge) {
-		this.menge = menge;
-	}
-
-	public String getMeins() {
-		return meins;
-	}
-
-	public void setMeins(String meins) {
-		this.meins = meins;
-	}
-
-	public String getAusch() {
-		return ausch;
-	}
-
-	public void setAusch(String ausch) {
-		this.ausch = ausch;
-	}
-
-	public String getAlpgr() {
-		return alpgr;
-	}
-
-	public void setAlpgr(String alpgr) {
-		this.alpgr = alpgr;
-	}
-
-	public String getAlprf() {
-		return alprf;
-	}
-
-	public void setAlprf(String alprf) {
-		this.alprf = alprf;
-	}
-
-	public String getAlpst() {
-		return alpst;
-	}
-
-	public void setAlpst(String alpst) {
-		this.alpst = alpst;
-	}
-
-	public String getEwahr() {
-		return ewahr;
-	}
-
-	public void setEwahr(String ewahr) {
-		this.ewahr = ewahr;
-	}
-
-	public String getItsob() {
-		return itsob;
-	}
-
-	public void setItsob(String itsob) {
-		this.itsob = itsob;
-	}
-
-	public String getLgort() {
-		return lgort;
-	}
-
-	public void setLgort(String lgort) {
-		this.lgort = lgort;
-	}
-
-	public String getSanka() {
-		return sanka;
-	}
-
-	public void setSanka(String sanka) {
-		this.sanka = sanka;
 	}
 
 	public String getReadFlag() {

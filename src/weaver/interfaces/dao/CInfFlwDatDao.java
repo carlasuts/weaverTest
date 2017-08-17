@@ -2,7 +2,7 @@ package weaver.interfaces.dao;
 
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
-import weaver.interfaces.entity.CInfFlwDat;
+import weaver.interfaces.mes.entity.CInfFlwDat;
 import weaver.interfaces.workflow.action.Action;
 import weaver.soa.workflow.request.RequestInfo;
 

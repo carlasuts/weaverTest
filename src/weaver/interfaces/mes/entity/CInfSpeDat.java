@@ -1,4 +1,4 @@
-package weaver.interfaces.entity;
+package weaver.interfaces.mes.entity;
 
 /**
  * @author zong.yq

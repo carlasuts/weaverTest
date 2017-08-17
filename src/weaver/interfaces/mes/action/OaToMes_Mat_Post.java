@@ -1,4 +1,4 @@
-package weaver.interfaces.sap;
+package weaver.interfaces.mes.action;
 
 import weaver.general.BaseBean;
 import weaver.interfaces.workflow.action.Action;
