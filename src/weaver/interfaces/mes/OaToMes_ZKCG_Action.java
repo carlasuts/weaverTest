@@ -1,8 +1,9 @@
-package weaver.interfaces.sap;
+package weaver.interfaces.mes;
 
 import net.sf.json.JSONObject;
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
+import weaver.interfaces.sap.HttpClientJson;
 import weaver.interfaces.workflow.action.Action;
 import weaver.soa.workflow.request.RequestInfo;
 
@@ -15,7 +16,7 @@ import weaver.soa.workflow.request.RequestInfo;
  */
 public class OaToMes_ZKCG_Action implements Action {
 
-	private static final String url = "";
+	private static final String url = "http://172.16.59.54:8080/MesWebService/req";
 	private BaseBean baseBean = new BaseBean();
 
 	JSONObject req = new JSONObject();
@@ -40,8 +41,7 @@ public class OaToMes_ZKCG_Action implements Action {
 				req.put("fromSystem", "TEST");
 				req.put("functionName", "MES_TERMINATELOT");
 				req.put("token", "TESTTOKEN");
-				String retSrcs = HttpClientJson.readInterfacePost("http://172.16.59.54:8080/MesWebService/req",
-						req.toString());// 向MES传输json对象
+				String retSrcs = HttpClientJson.readInterfacePost(url, req.toString());// 向MES传输json对象
 				baseBean.writeLog(retSrcs);// 抓取返回值
 			}
 		} catch (Exception e) {
