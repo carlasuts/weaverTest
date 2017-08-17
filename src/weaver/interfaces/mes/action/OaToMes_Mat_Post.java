@@ -4,6 +4,12 @@ import weaver.general.BaseBean;
 import weaver.interfaces.workflow.action.Action;
 import weaver.soa.workflow.request.RequestInfo;
 
+/**
+ * 节点后附加操作 调用OaToMes_Mat_Action 向mes中传数据
+ * 
+ * @author zong.yq
+ *
+ */
 public class OaToMes_Mat_Post implements Action {
 
 	@Override
