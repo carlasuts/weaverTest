@@ -17,17 +17,24 @@ public class ProductNameVerifyA implements Action {
 			String status = "";
 			// 获得流程是退回还是提交
 			String src = request.getRequestManager().getSrc();
-			baseBean.writeLog("ProductNameVerifyA src:" + src);
 			if (src.equals("submit")) {// 提交流程
 				status = "S";
 			} else if (src.equals("reject")) {// 流程退回
 				status = "E";
 			}
 			if (status.equals("E")) {
-				sql = "UPDATE formtable_main_93 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
+				sql = "UPDATE formtable_main_110 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
 						+ rid;
 				baseBean.writeLog("ProductNameVerifyA:" + sql);
 				rs.executeSql(sql);
+			}
+			sql = "SELECT SQR FROM FORMTABLE_MAIN_110";
+			rs.execute(sql);
+			rs.next();
+			String SQR = rs.getString("SQR");
+			if (SQR == null || SQR == "") {
+				baseBean.writeLog("当期requestId" + rid + "中SQR为空");
+//				sql = "DELETE FROM formtable_main_93 where requestid = " + rid;
 			}
 		} catch (Exception e) {
 			request.getRequestManager().setMessageid("404");
