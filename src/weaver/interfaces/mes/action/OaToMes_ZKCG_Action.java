@@ -28,7 +28,7 @@ public class OaToMes_ZKCG_Action implements Action {
 		String requsetId = request.getRequestid();// 获取当前流程的requsetId
 		try {
 			sql = "SELECT a.LOT_CODE,a.MATERIAL FROM FORMTABLE_MAIN_68_DT1 a INNER JOIN FORMTABLE_MAIN_68 b ON b.ID = a.MAINID WHERE b.REQUESTID = '"
-					+ requsetId + "'";// 获取当前requestId的明细表1的内容
+					+ requsetId + "'";
 			rs.execute(sql);
 			while (rs.next()) {
 				json.put("userId", "OA");// 用户id 固定写死为OA
