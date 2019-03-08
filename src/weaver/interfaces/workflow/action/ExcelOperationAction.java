@@ -37,7 +37,6 @@ public class ExcelOperationAction implements Action {
     private static final String PREFIX1 = "https://my500472.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codataapi/";
     private static final String POSTFIX1 = "?$format=json";
     private String sql = "";
-    private int rowLength = 0;
 
     @Override
     public String execute(RequestInfo request) {
@@ -54,7 +53,7 @@ public class ExcelOperationAction implements Action {
         File file = new File(filePath);
         try {
             String[][] result = getData(file, 1);
-            rowLength = result.length;
+            int rowLength = result.length;
             List<String> list = new ArrayList<String>(rowLength);
             for (int i = 0; i < rowLength; i++) {
                 String cust = "", startTime = "", endTime = "", project = "", partner = "", participant = "";
@@ -107,7 +106,6 @@ public class ExcelOperationAction implements Action {
                     list.add(tagValue);
                 }
             }
-            baseBean.writeLog("list的值为: " + list.toString());
             updateTagValue(list);
         } catch (IOException e) {
             e.printStackTrace();
@@ -218,7 +216,7 @@ public class ExcelOperationAction implements Action {
      * @param list 因为附件中可能会存在多条记录，CRM返回的tagValue也是多条，因而需要把所有的tagValue拼接起来存储
      */
     private void updateTagValue (List<String> list) {
-
+        baseBean.writeLog("list的值为: " + list.toString());
     }
 
     /**
