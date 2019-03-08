@@ -1,11 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="weaver.general.Util,java.text.*,weaver.conn.*,java.util.*"%>
+<%@ page contentType="text/html;charset=GBK" language="java"%>
+<%@ page
+	import="weaver.general.Util,java.text.*,weaver.conn.*,java.util.*"%>
 <%@page import="weaver.general.BaseBean"%>
 <%
 	try {
 		BaseBean baseBean = new BaseBean();
-		String fzxx = request.getParameter("fzxx");//å°è£…å½¢å¼
-		String khdm = request.getParameter("khdm");//é¡¾å®¢ä»£ç 
+		String fzxx = request.getParameter("fzxx");//·â×°ÐÎÊ½
+		String khdm = request.getParameter("khdm");//¹Ë¿Í´úÂë
 		
 		RecordSet rs = new RecordSet();
 		String sql = "";

@@ -130,7 +130,7 @@ function doadd(){
 		var fzwx = $("#field13318").val();//封装外形大类
 		var gysdh = $("#field13923").val();//供应商代号
 		var str = "";
-		var str1 = "000";
+		var str1 = "0000";
 		var str2 = "5000";//合肥苏通
 		var str3 = "0000";
 		var str4 = "8000";//合肥  158客户  配线打印
@@ -158,7 +158,9 @@ function doadd(){
 					//配线图
 					if(tzlx1 == "0"){
 						if(sclx1 =="0" || sclx1 =="1"){//试流,考核
-							if(cq1 == "0")
+							$("#field13322").val("BA-NF-S"+khh+str.substr(str.length-4));
+							document.getElementById("field13322").readOnly=true;
+							/* if(cq1 == "0")
 							{
 								if(khh !="158"){
 									$("#field13322").val("BA-NF-S"+khh+str.substr(str.length-3));
@@ -173,9 +175,11 @@ function doadd(){
 							{
 								$("#field13322").val("BA-NF-S"+khh+str.substr(str.length-4));
 								document.getElementById("field13322").readOnly=true;
-							}
+							} */
 						}else if(sclx1 =="2"){//量产
-							if(cq1 == "0")
+							$("#field13322").val("BA-NF-"+khh+str.substr(str.length-4));
+							document.getElementById("field13322").readOnly=true;
+							/* if(cq1 == "0")
 							{
 								if(khh != "158"){
 									$("#field13322").val("BA-NF-"+khh+str.substr(str.length-3));
@@ -183,38 +187,42 @@ function doadd(){
 								}else{//158客户 取四位
 									$("#field13322").val("BA-NF-"+khh+str.substr(str.length-4));
 									document.getElementById("field13322").readOnly=true;
-								}
+								} 
 
 							}
 							if(cq1 == "1" || cq1 == "2")
 							{
 								$("#field13322").val("BA-NF-"+khh+str.substr(str.length-4));
 								document.getElementById("field13322").readOnly=true;
-							}
+							} */
 						}
 					}
 					
 					//打印图
 					if(tzlx1 == "1"){
 						if(sclx1 =="0" || sclx1 =="1"){//试流,考核
-							if(cq1 == "0")
+							$("#field13322").val("BB-KK-S"+khh+str.substr(str.length-4));
+							document.getElementById("field13322").readOnly=true;
+							/* if(cq1 == "0")
 							{
-								if(khh !="158"){
+								 if(khh !="158"){
 									$("#field13322").val("BB-KK-S"+khh+str.substr(str.length-3));
 									document.getElementById("field13322").readOnly=true;
 								}else{
 									$("#field13322").val("BB-KK-S"+khh+str.substr(str.length-4));
 									document.getElementById("field13322").readOnly=true;
-								}
+								} 
 
 							}
 							if(cq1 == "1" || cq1 == "2")
 							{
 								$("#field13322").val("BB-KK-S"+khh+str.substr(str.length-4));
 								document.getElementById("field13322").readOnly=true;
-							}
+							} */
 						}else if(sclx1 =="2"){//量产
-							if(cq1 == "0")
+							$("#field13322").val("BB-KK-"+khh+str.substr(str.length-4));
+							document.getElementById("field13322").readOnly=true;
+							/* if(cq1 == "0")
 							{
 								if(khh != "158"){
 									$("#field13322").val("BB-KK-"+khh+str.substr(str.length-3));
@@ -229,7 +237,7 @@ function doadd(){
 							{
 								$("#field13322").val("BB-KK-"+khh+str.substr(str.length-4));
 								document.getElementById("field13322").readOnly=true;
-							}
+							} */
 						}
 					}
 					

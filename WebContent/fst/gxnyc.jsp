@@ -1,21 +1,21 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="/systeminfo/init_wev8.jsp" %>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<%@ include file="/systeminfo/init.jsp" %>
 <%@ taglib uri="/WEB-INF/weaver.tld" prefix="wea"%>
 <%@ page import="weaver.general.Util" %>
 <%@ page import="java.util.*" %>
 <jsp:useBean id="rs" class="weaver.conn.RecordSet" scope="page" />
 
 <HTML><HEAD>
-<LINK REL=stylesheet type=text/css HREF=/css/Weaver_wev8.css></HEAD>
-<SCRIPT language="javascript" src="/js/weaver_wev8.js"></script>
-<script language=javascript src="/js/jquery/jquery-1.4.2.min_wev8.js"></script>
+<LINK REL=stylesheet type=text/css HREF=/css/Weaver.css></HEAD>
+<SCRIPT language="javascript" src="/js/weaver.js"></script>
+<script language=javascript src="/js/jquery/jquery-1.4.2.min.js"></script>
 <%
 int userID = user.getUID();
 
 String khm = Util.null2String(request.getParameter("khm"));
 String xh = Util.null2String(request.getParameter("xh"));
 String pkid = Util.null2String(request.getParameter("pkid"));
-String workcode = Util.null2String(request.getParameter("workcode"));//å·¥å·
+String workcode = Util.null2String(request.getParameter("workcode"));//¹¤ºÅ
 String sqlwhere = " where 1 = 1 ";
 
 if(!khm.equals("")){
@@ -39,22 +39,22 @@ int	perpage=10;
 
 <%
 String imagefilename = "/images/hdMaintenance.gif";
-String titlename = "å·¥åºå†…å¼‚å¸¸";
+String titlename = "Á¼ÂÊÒì³£";
 String needfav ="1";
 String needhelp ="";
 %>
 <BODY>
-<%@ include file="/systeminfo/TopTitle_wev8.jsp" %>
-<%@ include file="/systeminfo/RightClickMenuConent_wev8.jsp" %>
+<%@ include file="/systeminfo/TopTitle.jsp" %>
+<%@ include file="/systeminfo/RightClickMenuConent.jsp" %>
 <%
 	RCMenu += "{"+SystemEnv.getHtmlLabelName(197,user.getLanguage())+",javascript:doSearch(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
-	RCMenu += "{å¯¼å…¥excel,javascript:doImportExcel(),_self} " ;
+	RCMenu += "{µ¼Èëexcel,javascript:doImportExcel(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
-	RCMenu += "{æ¨¡æ¿ä¸‹è½½,javascript:doDownload(),_self} " ;
+	RCMenu += "{Ä£°åÏÂÔØ,javascript:doDownload(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
 %>
-<%@ include file="/systeminfo/RightClickMenu_wev8.jsp" %>
+<%@ include file="/systeminfo/RightClickMenu.jsp" %>
 <table width=100% height=100% border="0" cellspacing="0" cellpadding="0">
 <colgroup>
 <col width="10">
@@ -75,21 +75,21 @@ String needhelp ="";
 		<col width="16%">
 		<col width="16%">
 		<TR>
-			<td NOWRAP width='5%'>å®¢æˆ·å</td>
+			<td NOWRAP width='5%'>¿Í»§Ãû</td>
 			<td class=FIELD width='10%'>
 			<input type=text id='khm' name='khm' value='<%=khm%>'></td>
-			<td NOWRAP width='5%'>å‹å·</td>
+			<td NOWRAP width='5%'>ĞÍºÅ</td>
 			<td class=FIELD width='10%'>
 			<input type=text id='xh' name='xh' value='<%=xh%>'></td>
 			<td NOWRAP width='5%'>PKLD</td>
 			<td class=FIELD width='10%'>
 			<input type=text id='pkid' name='pkid' value='<%=pkid%>'></td>
-			<td NOWRAP width='5%'>å·¥å·</td>
+			<td NOWRAP width='5%'>¹¤ºÅ</td>
 			<td class=FIELD width='10%'>
 			<input type=text id='workcode' name='workcode' value='<%=workcode%>'></td>
-			<td NOWRAP width='25%'><input type="button" value="æœç´¢" onclick="doSearch();">&nbsp;&nbsp;
-			<input type="button" value="å¯¼å…¥excel" onclick="doImportExcel();">&nbsp;&nbsp;
-			<input type="button" value="æ¨¡æ¿ä¸‹è½½" onclick="javascript:window.location.href='gxnyc.xls';"></td>
+			<td NOWRAP width='25%'><input type="button" value="ËÑË÷" onclick="doSearch();">&nbsp;&nbsp;
+			<input type="button" value="µ¼Èëexcel" onclick="doImportExcel();">&nbsp;&nbsp;
+			<input type="button" value="Ä£°åÏÂÔØ" onclick="javascript:window.location.href='gxnyc.xls';"></td>
 		</TR>
 		<TR class=Spacing><TD class=Line1 colspan=8></TD></TR>
 		</table>
@@ -105,15 +105,15 @@ String needhelp ="";
 		            tableString =" <table instanceid=\"contract\" tabletype=\"none\" pagesize=\""+perpage+"\" >"+
 		                         "		<sql backfields=\""+backfields+"\" sqlform=\""+fromSql+"\" sqlwhere=\""+Util.toHtmlForSplitPage(sqlWhere)+"\" sqlorderby=\""+orderby+"\" sqlprimarykey=\"a.id\" sqlsortway=\"desc\" sqlisdistinct=\"false\"/>"+
 		                         "		<head>"+
-								 "			<col width=\"20%\" text=\"å®¢æˆ·å\" column=\"khm\" orderkey=\"khm\"  />"+
-								 "			<col width=\"20%\" text=\"å‹å·\" column=\"xh\" orderkey=\"xh\"  />"+
+								 "			<col width=\"20%\" text=\"¿Í»§Ãû\" column=\"khm\" orderkey=\"khm\"  />"+
+								 "			<col width=\"20%\" text=\"ĞÍºÅ\" column=\"xh\" orderkey=\"xh\"  />"+
 								 "			<col width=\"20%\" text=\"PKLD\" column=\"pkid\" orderkey=\"pkid\"  />"+
-								 "			<col width=\"10%\" text=\"å·¥å·\" column=\"workcode\" orderkey=\"workcode\"  />"+
-								 "			<col width=\"10%\" text=\"å§“å\" column=\"lastname\" orderkey=\"lastname\"  />"+
-								 "			<col width=\"10%\" text=\"è´£ä»»äºº\" column=\"zrr\" orderkey=\"zrr\"  />"+
+								 "			<col width=\"10%\" text=\"¹¤ºÅ\" column=\"workcode\" orderkey=\"workcode\"  />"+
+								 "			<col width=\"10%\" text=\"ĞÕÃû\" column=\"lastname\" orderkey=\"lastname\"  />"+
+								 "			<col width=\"10%\" text=\"ÔğÈÎÈË\" column=\"zrr\" orderkey=\"zrr\"  />"+
 		                         "		</head>"+
 								 "		<operates width=\"10%\">";
-					tableString +=		 "    		<operate href=\"javascript:doDel()\"  text=\"åˆ é™¤\" target=\"_self\" index=\"0\"/>";
+					tableString +=		 "    		<operate href=\"javascript:doDel()\"  text=\"É¾³ı\" target=\"_self\" index=\"0\"/>";
 					tableString +=		 "		</operates>"+
 		                         " </table>";
 		         %>
@@ -137,11 +137,11 @@ String needhelp ="";
 </table>
 
 <script language=javascript>
-//æŸ¥è¯¢
+//²éÑ¯
 function doSearch(){
 	document.frmmain.submit();
 }
-//å¯¼å…¥
+//µ¼Èë
 function doImportExcel(){
 	var rvalue = window.showModalDialog("gxnycexcel.jsp");
 	if(rvalue > 0){
@@ -152,7 +152,7 @@ function doDownload(){
 	window.location.href='gxnyc.xls';
 }
 function doDel(id){
-	var isdel = confirm("çœŸçš„è¦åˆ é™¤å—?");
+	var isdel = confirm("ÕæµÄÒªÉ¾³ıÂğ?");
 	if(isdel){
 		document.frmmain.action="gxnycoperation.jsp?type=del&id="+id;
 		document.frmmain.submit();	
@@ -160,6 +160,6 @@ function doDel(id){
 }
 </script>
 </body>
-<SCRIPT language="javascript" defer="defer" src="/js/JSDateTime/WdatePicker_wev8.js"></script>
-<SCRIPT language="javascript" defer="defer" src="/js/datetime_wev8.js"></script>
+<SCRIPT language="javascript" defer="defer" src="/js/JSDateTime/WdatePicker.js"></script>
+<SCRIPT language="javascript" defer="defer" src="/js/datetime.js"></script>
 </html>

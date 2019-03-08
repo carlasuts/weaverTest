@@ -1,44 +1,64 @@
+/**
+ * ****************************************************************************
+ * System      : MessTest
+ * Module      : weaver.interfaces.workflow.action.testDepartment.programList
+ * File Name   : ProductNameVerifyA.java
+ * Description : ç¨‹åºä¸€è§ˆè¡¨æ ¡éªŒ
+ * History
+ * Seq   Date        Developer      Description
+ * ---------------------------------------------------------------------------
+ * 1     2017å¹´9æœˆ5æ—¥     xu.sy     	ä¿®æ”¹è¡¨å•ID
+ *
+ * Copyright(C) 2017 NT,Inc.
+ * All rights reserved.
+ ****************************************************************************
+ */
 package weaver.interfaces.workflow.action.testDepartment.programList;
 
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
 import weaver.interfaces.workflow.action.Action;
+import weaver.interfaces.workflow.util.BillUtil;
 import weaver.soa.workflow.request.RequestInfo;
 
 public class ProductNameVerifyA implements Action {
+	private static int formId = 0;
 
 	@Override
 	public String execute(RequestInfo request) {
+		formId = BillUtil.getFormId(Integer.parseInt(request.getWorkflowid()));
 		try {
 			BaseBean baseBean = new BaseBean();
 			RecordSet rs = new RecordSet();
 			String sql = "";
-			String rid = request.getRequestid();// »ñÈ¡µ±ÇÒÁ÷³ÌµÄid
+			String rid = request.getRequestid();// è·å–å½“ä¸”æµç¨‹çš„id
 			String status = "";
-			// »ñµÃÁ÷³ÌÊÇÍË»Ø»¹ÊÇÌá½»
+			// è·å¾—æµç¨‹æ˜¯é€€å›è¿˜æ˜¯æäº¤
 			String src = request.getRequestManager().getSrc();
-			if (src.equals("submit")) {// Ìá½»Á÷³Ì
+			if (src.equals("submit")) {// æäº¤æµç¨‹
 				status = "S";
-			} else if (src.equals("reject")) {// Á÷³ÌÍË»Ø
+			} else if (src.equals("reject")) {// æµç¨‹é€€å›
 				status = "E";
 			}
 			if (status.equals("E")) {
-				sql = "UPDATE formtable_main_110 SET XZSQIDH=NULL,XZBBH=NULL,SBIDH=NULL,SBIDBBH=NULL,SCWJ=NULL,BZXX=NULL,CUSTID=NULL,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFIDH=NULL,ZFIDBBH=NULL,ZFDYPMLIST=NULL,BFBZ=NULL,SHR=NULL,THBZ=1 where requestid ="
-						+ rid;
+				sql = "SELECT SCWJ FROM FORMTABLE_MAIN_" + formId + " WHERE REQUESTID = '" + rid + "'";
+				rs.execute(sql);
+				rs.next();
+				String docid = rs.getString("SCWJ");
+				baseBean.writeLog(docid);
+				sql = "SELECT IMAGEFILENAME FROM DOCIMAGEFILE WHERE DOCID = '" + docid + "'";
+				rs.execute(sql);
+				rs.next();
+				String imagefilename = rs.getString("IMAGEFILENAME");
+				sql = "UPDATE formtable_main_" + formId + " SET SCWJ=NULL,THBZ=1,XZDYPMLIST=NULL,SBDYPMLIST=NULL,ZFDYPMLIST=NULL,"
+						+ "BZXX = '" + imagefilename + "'" + " where requestid ='" + rid + "'";
 				baseBean.writeLog("ProductNameVerifyA:" + sql);
 				rs.executeSql(sql);
 			}
-			sql = "SELECT SQR FROM FORMTABLE_MAIN_110";
 			rs.execute(sql);
-			rs.next();
-			String SQR = rs.getString("SQR");
-			if (SQR == null || SQR == "") {
-				baseBean.writeLog("µ±ÆÚrequestId" + rid + "ÖĞSQRÎª¿Õ");
-//				sql = "DELETE FROM formtable_main_93 where requestid = " + rid;
-			}
 		} catch (Exception e) {
 			request.getRequestManager().setMessageid("404");
-			request.getRequestManager().setMessagecontent("ÏµÍ³Òì³££¬ÇëÁªÏµ¹ÜÀíÔ±");
+			request.getRequestManager().setMessagecontent("ç³»ç»Ÿå¼‚å¸¸ï¼Œè¯·è”ç³»ç®¡ç†å‘˜");
 			BaseBean baseBean = new BaseBean();
 			baseBean.writeLog("start log");
 			baseBean.writeLog("------------------------------------------------------------------------");

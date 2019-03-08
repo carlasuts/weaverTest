@@ -11,6 +11,7 @@ import weaver.general.BaseBean;
 import weaver.general.Util;
 import weaver.hrm.HrmUserVarify;
 import weaver.hrm.User;
+import weaver.interfaces.workflow.util.BillUtil;
 import weaver.soa.workflow.request.DetailTable;
 import weaver.soa.workflow.request.MainTableInfo;
 import weaver.soa.workflow.request.Property;
@@ -30,16 +31,30 @@ public class FSTWF1186USER implements Action {
             //日志对象
             BaseBean e = new BaseBean();
             String requestID = request.getRequestid();
+            int  formId = BillUtil.getFormId(Integer.parseInt(request.getWorkflowid()));
             e.writeLog(requestID);
             String sql = "";
             String receivedpersonids = "";
-            
+            String rolesmark = "";
+            RecordSet rs1 = new RecordSet();
+            sql = " select cq from formtable_main_"+formId+" where requestid = '"+ requestID +"' ";
+            rs1.executeSql(sql);
+            rs1.next();
+            if(rs1.getString("cq").equals("1000")){
+            	rolesmark = "MDM_ASSY_ROUTER_HANDLER";
+            }
+            if(rs1.getString("cq").equals("4000")){
+            	rolesmark = "MDM_ASSY_ROUTER_HANDLER_ST";
+            }
+            if(rs1.getString("cq").equals("5000")){
+            	rolesmark = "MDM_ASSY_ROUTER_HANDLER_HF";
+            }
             String resourceId = request.getLastoperator();
             RecordSet rs = new RecordSet();
             sql = "select resourceid from hrmrolemembers "
             		+ "where roleid =( select distinct  a.id from hrmroles  a , hrmrolemembers b   "
             							+ "	where b.roleid = a.id "
-            							+ "and a.rolesmark = 'MDM_ASSY_ROUTER_HANDLER' "
+            							+ "and a.rolesmark = '"+ rolesmark +"' "
             							+ "and b.resourceid = '"+ resourceId +"') ";
             rs.executeSql(sql);
             while(rs.next()){
@@ -47,7 +62,7 @@ public class FSTWF1186USER implements Action {
                 	receivedpersonids = receivedpersonids + rs.getString("resourceid") + ",";
             	}
             }
-            sql = "update formtable_main_78 set djs = '"+ receivedpersonids +"' where requestid = '"+ requestID +"' ";
+            sql = "update formtable_main_"+formId+" set djs = '"+ receivedpersonids +"' where requestid = '"+ requestID +"' ";
             rs.executeSql(sql);
             
         } catch (Exception var11) {

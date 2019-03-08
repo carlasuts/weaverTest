@@ -1,5 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="/systeminfo/init_wev8.jsp"%>
+<%@ page language="java" contentType="text/html; charset=GBK"%>
+<%@ include file="/systeminfo/init.jsp"%>
 <%@ page import="weaver.general.Util,java.util.List,java.util.ArrayList"%>
 <%@ page import="weaver.general.Util,java.text.*,weaver.conn.*,weaver.soa.workflow.request.*" %>
 <%@ page import="java.util.*" %>
@@ -7,13 +7,13 @@
 <%@ page import="java.text.*" %>
 <HTML>
 <HEAD>
-<LINK REL=stylesheet type=text/css HREF=/css/Weaver_wev8.css>
+<LINK REL=stylesheet type=text/css HREF=/css/Weaver.css>
 </HEAD>
-<SCRIPT language="javascript" src="/js/weaver_wev8.js"></script>
-<script language=javascript src="/js/jquery/jquery-1.4.2.min_wev8.js"></script>
+<SCRIPT language="javascript" src="/js/weaver.js"></script>
+<script language=javascript src="/js/jquery/jquery-1.4.2.min.js"></script>
 <%
 	String imagefilename = "/images/hdMaintenance.gif";
-	String titlename = "ITÂºÇÂ∏∏Â§ÑÁΩÆ";
+	String titlename = "IT“Ï≥£¥¶÷√";
 	String needfav = "1";
 	String needhelp = "";
 %>
@@ -37,17 +37,17 @@
 	}
 %>
 <BODY>
-	<%@ include file="/systeminfo/TopTitle_wev8.jsp"%>
-	<%@ include file="/systeminfo/RightClickMenuConent_wev8.jsp"%>
+	<%@ include file="/systeminfo/TopTitle.jsp"%>
+	<%@ include file="/systeminfo/RightClickMenuConent.jsp"%>
 	<%
-		//‰øùÂ≠ò
+		//±£¥Ê
 		RCMenu += "{" + SystemEnv.getHtmlLabelName(86, user.getLanguage()) + ",javascript:doSave(this),_self} ";
 		RCMenuHeight += RCMenuHeightStep;
-		//ËøîÂõû
+		//∑µªÿ
 		RCMenu += "{" + SystemEnv.getHtmlLabelName(1290, user.getLanguage()) + ",javascript:location.href='ityclist.jsp',_self} ";
 		RCMenuHeight += RCMenuHeightStep;
 	%>
-	<%@ include file="/systeminfo/RightClickMenu_wev8.jsp"%>
+	<%@ include file="/systeminfo/RightClickMenu.jsp"%>
 	<table width=100% height=100% border="0" cellspacing="0"
 		cellpadding="0">
 		<colgroup>
@@ -67,13 +67,13 @@
 					<table style="width: 80%" class=ListStyle>
 						<TBODY>
 							<TR>
-								<td align="right">ÂêçÁß∞Ôºö</td>
+								<td align="right">√˚≥∆£∫</td>
 								<td align="left">
 									<input type='text' id='name' name='name' value='<%=name %>' />
 								</td>
 							</TR>
 							<TR>
-								<td align="right">ÊéíÂ∫èÔºö</td>
+								<td align="right">≈≈–Ú£∫</td>
 								<td align="left">
 									<input type='text' id='orderby' name='orderby' value='<%=oby %>' />
 								</td>
@@ -93,6 +93,6 @@
 	</script>
 </body>
 <SCRIPT language="javascript" defer="defer"
-	src="/js/JSDateTime/WdatePicker_wev8.js"></script>
-<SCRIPT language="javascript" defer="defer" src="/js/datetime_wev8.js"></script>
+	src="/js/JSDateTime/WdatePicker.js"></script>
+<SCRIPT language="javascript" defer="defer" src="/js/datetime.js"></script>
 </html>

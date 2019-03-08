@@ -15,24 +15,23 @@
 <%
 int userID = user.getUID();
 
-String cust_id = Util.null2String(request.getParameter("cust_id"));
-String mat_list = Util.null2String(request.getParameter("mat_list"));
-String id = Util.null2String(request.getParameter("id"));
-String versionid = Util.null2String(request.getParameter("versionid"));
-String FILENAME = Util.null2String(request.getParameter("FILENAME"));
+String custid = Util.null2String(request.getParameter("custid"));
+String dqidh = Util.null2String(request.getParameter("dqidh"));
+String dqidbbh = Util.null2String(request.getParameter("dqidbbh"));
+String dqpmlist = Util.null2String(request.getParameter("dqpmlist"));
 
-String sqlwhere = " where 1 = 1 ";
+String sqlwhere = " where 1 = 1  ";
 
-if(!id.equals("")){
-	sqlwhere += " and id like '%" + id + "%'";
+if(!custid.equals("")){
+	sqlwhere += " and custid like '%" + custid + "%'";
 }
 
-if(!cust_id.equals("")){
-	sqlwhere += " and cust_id like '%" + cust_id + "%'";
+if(!dqidh.equals("")){
+	sqlwhere += " and dqidh like '%" + dqidh + "%'";
 }
 
-if(!mat_list.equals("")){
-	sqlwhere += " and mat_list like '%" + mat_list + "%'";
+if(!dqpmlist.equals("")){
+	sqlwhere += " and dqpmlist like '%" + dqpmlist + "%'";
 }
 
 
@@ -76,13 +75,13 @@ String needhelp ="";
 		<TR>
 			<td NOWRAP width='5%'>客户号</td>
 			<td class=FIELD width='10%'>
-			<input type=text id='cust_id' name='cust_id' value='<%=cust_id%>'></td>
+			<input type=text id='custid' name='custid' value='<%=custid%>'></td>
 			<td NOWRAP width='5%'>id号</td>
 			<td class=FIELD width='10%'>
-			<input type=text id='id' name='id' value='<%=id%>'></td>
+			<input type=text id='dqidh' name='dqidh' value='<%=dqidh%>'></td>
 			<td NOWRAP width='5%'>品名</td>
 			<td class=FIELD width='10%'>
-			<input type=text id='mat_list' name='mat_list' value='<%=mat_list%>'></td>
+			<input type=text id='dqpmlist' name='dqpmlist' value='<%=dqpmlist%>'></td>
 			<td NOWRAP width='25%'>
 			<input type="button" value="搜索" onclick="doSearch();">&nbsp;&nbsp;
 			</td>
@@ -93,22 +92,25 @@ String needhelp ="";
 			<tr>
 				<td valign="top">
 		        	<%
-		            String backfields = "id,cust_id,versionid,mat_list,FILEREALPATH ";
-		            String fromSql  = " owiptstpgm ";
+		            String backfields = "id ,custid,dqidh,dqidbbh, bb,dqpmlist,gdtime";
+		            String fromSql  = "(select concat(concat(concat(concat(custid,'-'),dqidh),'-'),dqidbbh)as id ,custid,dqidh,dqidbbh, max(bfbz) as bb,dqpmlist,gdtime from formtable_main_110  where  dqidh !=' ' group by concat(concat(concat(concat(custid,'-'),dqidh),'-'),dqidbbh) , custid,dqidh,dqidbbh ,dqpmlist,gdtime )";
 		            String sqlWhere = sqlwhere;
 		            String orderby = " id " ;
+		            String sqlprimarykeys= " id ";
 		            String tableString = "";
 		            tableString =" <table  instanceid=\"contract\" tabletype=\"none\" pagesize=\""+perpage+"\" >"+
-		                         "		<sql backfields=\""+backfields+"\" sqlform=\""+fromSql+"\" sqlwhere=\""+Util.toHtmlForSplitPage(sqlWhere)+"\" sqlorderby=\""+orderby+"\"  sqlprimarykey=\"id\" sqlsortway=\"desc\" sqlisdistinct=\"false\"/>"+
+		                         "		<sql backfields=\""+backfields+"\" sqlform=\""+fromSql+"\" sqlwhere=\""+Util.toHtmlForSplitPage(sqlWhere)+"\" sqlorderby=\""+orderby+"\" sqlprimarykey=\"id\"  sqlsortway=\"desc\" sqlisdistinct=\"false\"/>"+
 		                         "		<head>"+
-								 "			<col width=\"5%\" text=\"客户号\" column=\"cust_id\" orderkey=\"cust_id\"  />"+
-								 "			<col width=\"5%\" text=\"ID号\" column=\"id\" orderkey=\"id\"  />"+
-								 "			<col width=\"5%\" text=\"版本号\" column=\"versionid\" orderkey=\"versionid\"  />"+
-								 "			<col width=\"15%\" text=\"品名list\" column=\"mat_list\" orderkey=\"mat_list\" />"+
+								 "			<col width=\"5%\" text=\"客户号\" column=\"custid\" orderkey=\"custid\"  />"+
+								 "			<col width=\"5%\" text=\"ID号\" column=\"dqidh\" orderkey=\"dqidh\"  />"+
+								 "			<col width=\"1%\" text=\"版本号\" column=\"dqidbbh\" orderkey=\"dqidbbh\"  />"+
+								 "			<col width=\"30%\" text=\"品名list\" column=\"dqpmlist\" orderkey=\"dqpmlist\" />"+
+								 "			<col width=\"10%\" text=\"归档时间\" column=\"gdtime\" orderkey=\"gdtime\" />"+
+								 "			<col width=\"5%\" text=\"是否作废\" column=\"bb\" orderkey=\"bb\" />"+
 		                         "		</head>"+
-  								 "		<operates width=\"10%\">";
-				    tableString +=		 "    		<operate href=\"javascript:doDel()\" text=\"明细list\" target=\"_self\" index=\"0\"/>";
-					tableString +=		 "		</operates>"+ 
+   								 "		<operates width=\"10%\">";
+				    tableString +=		 "    		<operate href=\"javascript:doView()\" text=\"明细list\" target=\"_self\" index=\"0\"/>";
+					tableString +=		 "		</operates>"+  
 		                         " </table>"; 
 		         	%>
 		         <wea:SplitPageTag  tableString="<%=tableString%>" isShowTopInfo="false" mode="run" />
@@ -136,26 +138,10 @@ function doSearch(){
 	document.frmmain.submit();
 }
 
+
 function doView(id){
-	alert(id);
-}
-
-
-function doDel(id){
-	jQuery.ajax({
-		url: "/interface/cxylbsqb/TF158105ajaxaction.jsp",
-		data: {type: 1, id:id},
-		cache: false,
-		type: "post",
-		dataType: "text",
-		async: false,
-		success: function (result) {
-			result = jQuery.trim(result);
-			alert(result);
-			//var ary  = new Array();
-			//ary = result.split("<br>");
-		}
-	});	
+	document.frmmain.action = "owiptstpgm_details.jsp?id="+id;
+	document.frmmain.submit();
 }
 
 

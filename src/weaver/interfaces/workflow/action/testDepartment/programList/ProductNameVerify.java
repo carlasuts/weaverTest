@@ -1,14 +1,5 @@
 package weaver.interfaces.workflow.action.testDepartment.programList;
 
-import java.io.File;
-import java.rmi.Naming;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import weaver.conn.RecordSet;
 import weaver.general.BaseBean;
 import weaver.interfaces.workflow.action.Action;
@@ -18,8 +9,14 @@ import weaver.interfaces.workflow.util.IHello;
 import weaver.interfaces.workflow.util.ZipUtil;
 import weaver.soa.workflow.request.RequestInfo;
 
+import java.io.File;
+import java.rmi.Naming;
+import java.util.*;
+
 public class ProductNameVerify implements Action {
 	private static int formId = 0;
+	private static String fileType = "";
+	private static String filerealpath = "";
 
 	@Override
 	public String execute(RequestInfo request) {
@@ -29,52 +26,62 @@ public class ProductNameVerify implements Action {
 		RecordSet rs = new RecordSet();
 
 		String sql = "";
-		String rid = request.getRequestid();// »ñÈ¡µ±ÇÒÁ÷³ÌµÄid
-		baseBean.writeLog("**********³ÌĞò¿ªÊ¼Ö´ĞĞ**********");
+		String rid = request.getRequestid();// è·å–å½“ä¸”æµç¨‹çš„id
+		baseBean.writeLog("**********ç¨‹åºå¼€å§‹æ‰§è¡Œ**********");
 
 		try {
 
-			String rmiurl = baseBean.getPropValue("RMIService", "rmiurl");// Õâ±ßËÆºõÓĞÎÊÌâ
-			baseBean.writeLog("rmiurl:" + rmiurl);
+			String rmiurl = baseBean.getPropValue("RMIService", "rmiurl");
 			sql = "select * from formtable_main_" + formId + " where requestid = " + rid;
-			baseBean.writeLog("´Óformtable_main_" + formId + "²éÑ¯Êı¾İ" + sql);
+			baseBean.writeLog("ä»formtable_main_" + formId + "æŸ¥è¯¢æ•°æ®" + sql);
 			rs.executeSql(sql);
 			rs.next();
 
-			String SCWJ = rs.getString("SCWJ");// SCWJ¼´ÏÂÃæÒªÊ¹ÓÃµÄdocid
-			// ÉêÇëÀàĞÍ 0:ĞÂ½¨ 1:Éı°æ 2:×÷·Ï
+			String SCWJ = rs.getString("SCWJ");// SCWJå³ä¸‹é¢è¦ä½¿ç”¨çš„docid
+
+			// String ifIncrease = rs.getString("SFXJ");
+			//
+			// String ifRise = rs.getString("SFSB");
+			//
+			// String ifZF = rs.getString("SFZF");
+
+			// ç”³è¯·ç±»å‹ 0:æ–°å»º 1:å‡ç‰ˆ 2:ä½œåºŸ
 			String SQLX = rs.getString("SQLX");
-			baseBean.writeLog("ÕâÀïÊÇÉêÇëÀàĞÍ£º" + SQLX);
+			baseBean.writeLog("è¿™é‡Œæ˜¯ç”³è¯·ç±»å‹ï¼š" + SQLX);
 
 			String productNameListString = "";
 
 			/**
-			 * ÅĞ¶ÏÊÇĞÂÔö»¹ÊÇÉı°æ Èç¹ûÊÇĞÂÔö¾Í°ÑXZDYPMLIST×Ö¶ÎÀïµÄÖµ¸³¸øproductNameList
-			 * Èç¹ûÊÇÉı°æ¾Í°ÑSBDYPMLIST×Ö¶ÎÀïµÄÖµ¸³¸øproductNameList
+			 * åˆ¤æ–­æ˜¯æ–°å¢è¿˜æ˜¯å‡ç‰ˆ å¦‚æœæ˜¯æ–°å¢å°±æŠŠXZDYPMLISTå­—æ®µé‡Œçš„å€¼èµ‹ç»™productNameList
+			 * å¦‚æœæ˜¯å‡ç‰ˆå°±æŠŠSBDYPMLISTå­—æ®µé‡Œçš„å€¼èµ‹ç»™productNameList
 			 */
-			if (SQLX.equals("0")) { // ÉêÇëÀàĞÍÎªĞÂÔö
-				sql = "SELECT replace(XZDYPMLIST,'&nbsp;','') as xzdypmlist FROM formtable_main_" + formId
+			if (SQLX.equals("0")) { // ç”³è¯·ç±»å‹ä¸ºæ–°å¢
+				sql = "SELECT replace(XZDYPMLIST,'&nbsp;',' ') as xzdypmlist FROM formtable_main_" + formId
 						+ " where requestid = " + rid;
-				baseBean.writeLog("Ìæ»»Êı¾İ¿âÖĞXZDYPMLISTµÄ¿Õ¸ñ:" + sql);
-				String xjProductNameList = rs.getString("xzdypmlist");
+				baseBean.writeLog("æ›¿æ¢æ•°æ®åº“ä¸­XZDYPMLISTçš„ç©ºæ ¼:" + sql);
 				rs.executeSql(sql);
 				rs.next();
+				String xjProductNameList = rs.getString("xzdypmlist").replace("&lt;", "<").replace("&gt;", ">")
+						.replace("&amp;", "&").replace("&quot;", "\"").replace("&copy;", "Â©").replace("&reg;", "Â®")
+						.replace("&times;", "Ã—").replace("&divide;", "Ã·");
 				productNameListString = xjProductNameList;
 				baseBean.writeLog("xjProductNameList" + xjProductNameList);
-			} else if (SQLX.equals("1")) {// ÉêÇëÀàĞÍÎªÉı°æ
-				sql = "SELECT replace(SBDYPMLIST,'&nbsp;','') as sbdypmlist FROM formtable_main_" + formId
+			} else if (SQLX.equals("1")) {// ç”³è¯·ç±»å‹ä¸ºå‡ç‰ˆ
+				sql = "SELECT replace(SBDYPMLIST,'&nbsp;',' ') as sbdypmlist FROM formtable_main_" + formId
 						+ " where requestid = " + rid;
-				baseBean.writeLog("Ìæ»»Êı¾İ¿âÖĞSBDYPMLISTµÄ¿Õ¸ñ:" + sql);
-				String sbProductNameList = rs.getString("sbdypmlist");
+				baseBean.writeLog("æ›¿æ¢æ•°æ®åº“ä¸­SBDYPMLISTçš„ç©ºæ ¼:" + sql);
 				baseBean.writeLog("ProductNameVerify sql:" + sql);
 				rs.executeSql(sql);
 				rs.next();
+				String sbProductNameList = rs.getString("sbdypmlist").replace("&lt;", "<").replace("&gt;", ">")
+						.replace("&amp;", "&").replace("&quot;", "\"").replace("&copy;", "Â©").replace("&reg;", "Â®")
+						.replace("&times;", "Ã—").replace("&divide;", "Ã·");
 				productNameListString = sbProductNameList;
-				baseBean.writeLog("sbProductNameList" + sbProductNameList);
-			} else if (SQLX.equals("2")) { // ÉêÇëÀàĞÍÎª×÷·Ï
+				baseBean.writeLog("sbProductNameList" + sbProductNameList) ;
+			} else if (SQLX.equals("2")) { // ç”³è¯·ç±»å‹ä¸ºä½œåºŸ
 				return Action.SUCCESS;
 			}
-			baseBean.writeLog("Ìæ»»Ö®ºóµÄproductNameList£º" + productNameListString);
+			baseBean.writeLog("æ›¿æ¢ä¹‹åçš„productNameListï¼š" + productNameListString);
 
 			sql = "select * from DOCIMAGEFILE where docid = '" + SCWJ + "'";
 			rs.executeSql(sql);
@@ -83,37 +90,37 @@ public class ProductNameVerify implements Action {
 			String imagefileid = rs.getString("imagefileid");
 			baseBean.writeLog("imagefileid:" + imagefileid);
 
-			String fileType = rs.getString("IMAGEFILENAME").substring(rs.getString("IMAGEFILENAME").indexOf("."));
+			fileType = rs.getString("IMAGEFILENAME").substring(rs.getString("IMAGEFILENAME").indexOf("."));
 			baseBean.writeLog("fileType:" + fileType);
 
 			sql = "select * from IMAGEFILE where imagefileid = '" + imagefileid + "'";
 			rs.executeSql(sql);
 			rs.next();
 
-			String filerealpath = rs.getString("filerealpath");
+			filerealpath = rs.getString("filerealpath");
 
-			baseBean.writeLog("Ñ¹Ëõ°üÕæÊµÂ·¾¶ filerealpath:" + filerealpath);
+			baseBean.writeLog("å‹ç¼©åŒ…çœŸå®è·¯å¾„ filerealpath:" + filerealpath);
 
-			ZipUtil.unzip(filerealpath);
+
+			ZipUtil.unzip(filerealpath);// è§£å‹æ–‡ä»¶
 
 			String unzipfilepath = filerealpath.replace(".zip", "");
-			baseBean.writeLog("½âÑ¹ºóµÄÎÄ¼şÂ·¾¶:" + unzipfilepath);
+			baseBean.writeLog("è§£å‹åçš„æ–‡ä»¶è·¯å¾„:" + unzipfilepath);
 
 			File file = new File(unzipfilepath);
 			if (file.exists()) {
 				file.renameTo(new File(unzipfilepath + fileType));
 			}
 			String test = unzipfilepath + fileType;
-			baseBean.writeLog("½âÑ¹ºóÎÄ¼şµÄÈ«Â·¾¶" + test);
+			baseBean.writeLog("è§£å‹åæ–‡ä»¶çš„å…¨è·¯å¾„" + test);
 
-			baseBean.writeLog("½âÑ¹ºóÎÄ¼şµÄÈ«Â·¾¶");
 			baseBean.writeLog("productNameListString: " + productNameListString);
 			String[] productName = productNameListString.split("\r<br>");
 			List<String> productList = new ArrayList<String>(Arrays.asList(productName));
 			Iterator<String> it = productList.iterator();
 			while (it.hasNext()) {
 				String x = it.next();
-				if ("".equals(x)) {
+				if (x.trim().isEmpty()) {
 					it.remove();
 				}
 			}
@@ -122,28 +129,26 @@ public class ProductNameVerify implements Action {
 			}
 			Set<String> productNameSet = new HashSet<String>(productList);
 			if (productList.size() != productNameSet.size()) {
-				request.getRequestManager().setMessageid("Â¼ÈëÄÚÈİÓĞÎó");
-				request.getRequestManager().setMessagecontent("Â¼ÈëµÄÆ·ÃûÖĞ°üº¬ÖØ¸´Ïî");
-				throw new RuntimeException("Â¼ÈëµÄÆ·ÃûÖĞ°üº¬ÖØ¸´Ïî");
+				request.getRequestManager().setMessageid("å½•å…¥å†…å®¹æœ‰è¯¯");
+				request.getRequestManager().setMessagecontent("å½•å…¥çš„å“åä¸­åŒ…å«é‡å¤é¡¹");
+				throw new RuntimeException("å½•å…¥çš„å“åä¸­åŒ…å«é‡å¤é¡¹");
 			} else {
-				baseBean.writeLog("Â¼ÈëÄÚÈİÎŞÖØ¸´Ïî size:" + productNameSet.size());
+				baseBean.writeLog("å½•å…¥å†…å®¹æ— é‡å¤é¡¹ size:" + productNameSet.size());
 			}
 
 			IHello rhello = (IHello) Naming.lookup(rmiurl);
-			baseBean.writeLog("rmiurl:" + rmiurl);
 			ProductNameVerifyPojo rmipojo = rhello.getDescsByFile(test);
-			baseBean.writeLog("È«Â·¾¶:" + test);
 
 			if (!rmipojo.isOk()) {
-				request.getRequestManager().setMessageid("ÎÄµµÓĞÎó");
+				request.getRequestManager().setMessageid("æ–‡æ¡£æœ‰è¯¯");
 				request.getRequestManager().setMessagecontent(rmipojo.getMsg());
 				throw new RuntimeException(rmipojo.getMsg());
 			} else {
-				baseBean.writeLog("RMIÕı³£·µ»Ø");
+				baseBean.writeLog("RMIæ­£å¸¸è¿”å›");
 				Set<String> rmiproductNameSet = new HashSet<String>(rmipojo.getContent());
 				baseBean.writeLog("rmiproductNameSet.size:" + rmiproductNameSet.size());
 				if (rmiproductNameSet.size() != productNameSet.size()) {
-					baseBean.writeLog("ÌõÄ¿Êı²»Ò»ÖÂ");
+					baseBean.writeLog("æ¡ç›®æ•°ä¸ä¸€è‡´");
 					baseBean.writeLog("rmiproductNameSet.size:" + rmiproductNameSet.size());
 					for (String string : rmiproductNameSet) {
 						baseBean.writeLog(string);
@@ -152,25 +157,24 @@ public class ProductNameVerify implements Action {
 					for (String string : rmiproductNameSet) {
 						baseBean.writeLog(string);
 					}
-					request.getRequestManager().setMessageid("Â¼ÈëÄÚÈİ»òÎÄµµÓĞÎó");
-					request.getRequestManager().setMessagecontent("ÌõÄ¿Êı²»Ò»ÖÂ");
-					throw new RuntimeException("ÌõÄ¿Êı²»Ò»ÖÂ");
+					request.getRequestManager().setMessageid("å½•å…¥å†…å®¹æˆ–æ–‡æ¡£æœ‰è¯¯");
+					request.getRequestManager().setMessagecontent("æ¡ç›®æ•°ä¸ä¸€è‡´");
+					throw new RuntimeException("æ¡ç›®æ•°ä¸ä¸€è‡´");
 				} else if (!rmiproductNameSet.equals(productNameSet)) {
-					baseBean.writeLog("ÄÚÈİ²»Ò»ÖÂ");
+					baseBean.writeLog("å†…å®¹ä¸ä¸€è‡´");
 					baseBean.writeLog("rmiproductNameSet content");
 					for (String string : rmiproductNameSet) {
 						baseBean.writeLog(string);
 					}
 					baseBean.writeLog("productNameSet content");
-					for (String string : rmiproductNameSet) {
+					for (String string : productNameSet) {
 						baseBean.writeLog(string);
 					}
-					request.getRequestManager().setMessageid("Â¼ÈëÄÚÈİ»òÎÄµµÓĞÎó");
-					request.getRequestManager().setMessagecontent("ÄÚÈİ²»Ò»ÖÂ");
-					throw new RuntimeException("ÄÚÈİ²»Ò»ÖÂ");
+					request.getRequestManager().setMessageid("å½•å…¥å†…å®¹æˆ–æ–‡æ¡£æœ‰è¯¯");
+					request.getRequestManager().setMessagecontent("å†…å®¹ä¸ä¸€è‡´");
+					throw new RuntimeException("å†…å®¹ä¸ä¸€è‡´");
 				}
 			}
-
 		} catch (Exception e) {
 			if (request.getRequestManager().getMessageid() == null) {
 				request.getRequestManager().setMessageid("Other");
@@ -181,16 +185,22 @@ public class ProductNameVerify implements Action {
 					+ rid;
 			rs.execute(sql);
 			rs.next();
-			baseBean.writeLog("ÇëÁªÏµ¹ÜÀíÔ±£º" + sql);
+			baseBean.writeLog("å·²è¿”å›æœ€åˆçŠ¶æ€ï¼š" + sql);
 
 			baseBean.writeLog("start log");
 			baseBean.writeLog("------------------------------------------------------------------------");
 			baseBean.writeLog("ProductNameVerify Message:" + e.getMessage());
-			baseBean.writeLog("ProductNameVerify StackTrace:" + e.getStackTrace());
 			baseBean.writeLog("------------------------------------------------------------------------");
 			baseBean.writeLog("end log");
+		} finally {
+			baseBean.writeLog("å‡†å¤‡åˆ é™¤è¿™ä¸ªæ–‡ä»¶");
+			String unzipFile = filerealpath.replace(".zip", fileType);
+			File file = new File(unzipFile);
+			baseBean.writeLog("å‡†å¤‡åˆ é™¤æ–‡ä»¶æ“ä½œ");
+			file.delete();
+			baseBean.writeLog("åˆ é™¤æˆåŠŸ");
 		}
-		baseBean.writeLog("**********³ÌĞò½áÊø**********");
+		baseBean.writeLog("**********ç¨‹åºç»“æŸ**********");
 		return Action.SUCCESS;
 	}
 }

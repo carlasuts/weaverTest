@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html;charset=GBK" language="java"%>
 <%@page import="java.net.URL"%> 
 <%@page import="java.net.URLConnection"%> 
 <%@page import="java.net.HttpURLConnection"%> 

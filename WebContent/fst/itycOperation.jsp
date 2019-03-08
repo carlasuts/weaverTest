@@ -1,5 +1,5 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="/systeminfo/init_wev8.jsp" %>
+<%@ page contentType="text/html;charset=GBK" language="java"%>
+<%@ include file="/systeminfo/init.jsp" %>
 <%@ page import="weaver.general.Util,java.text.*,weaver.conn.*,weaver.soa.workflow.request.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="weaver.file.*" %>

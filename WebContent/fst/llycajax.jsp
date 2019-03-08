@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="weaver.general.Util,java.text.*,weaver.conn.*,java.util.*"%>
+<%@ page contentType="text/html;charset=GBK" language="java"%>
+<%@ page
+	import="weaver.general.Util,java.text.*,weaver.conn.*,java.util.*"%>
 <%@page import="weaver.general.BaseBean"%>
 <%
 	try {

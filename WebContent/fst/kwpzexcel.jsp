@@ -1,19 +1,19 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="weaver.general.Util,java.util.*,java.math.*" %>
-<%@ include file="/systeminfo/init_wev8.jsp" %>
-<SCRIPT language="javascript" src="/js/checkinput_wev8.js"></script>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<%@ include file="/systeminfo/init.jsp" %>
+<SCRIPT language="javascript" src="/js/checkinput.js"></script>
 
 <HTML>
 <HEAD>
-<LINK href="/css/Weaver_wev8.css" type=text/css rel=STYLESHEET>
-<SCRIPT language="javascript" src="/js/weaver_wev8.js"></script>
-<SCRIPT language="javascript" src="/js/jquery/jquery_wev8_wev8.js"></script>
+<LINK href="/css/Weaver.css" type=text/css rel=STYLESHEET>
+<SCRIPT language="javascript" src="/js/weaver.js"></script>
+<SCRIPT language="javascript" src="/js/jquery/jquery.js"></script>
 
 <!--For Jquery UI-->
-<link href="/js/jquery/ui/jquery-ui_wev8.css" type="text/css" rel=stylesheet>
-<script type="text/javascript" src="/js/jquery/ui/ui.core_wev8.js"></script>
+<link href="/js/jquery/ui/jquery-ui.css" type="text/css" rel=stylesheet>
+<script type="text/javascript" src="/js/jquery/ui/ui.core.js"></script>
 <!--For Dialog-->
-<script type="text/javascript" src="/js/jquery/ui/ui.dialog_wev8.js"></script>
+<script type="text/javascript" src="/js/jquery/ui/ui.dialog.js"></script>
     
 <STYLE type=text/css>
 #loading{
@@ -37,7 +37,7 @@
 	String needhelp = "";
 %>
 <BODY>
-<%@ include file="/systeminfo/TopTitle_wev8.jsp" %>
+<%@ include file="/systeminfo/TopTitle.jsp" %>
 <table width=100% height=100% border="0" cellspacing="0" cellpadding="0">
 <colgroup>
 <col width="10">
@@ -62,7 +62,7 @@
   <table class=Viewform >
     <COLGROUP> <COL width="15%"> <COL width="85%"> <tbody> 
     <tr class=Title> 
-      <td><nobr><b>Execlå¯¼å…¥</b></td>
+      <td><nobr><b>Execlµ¼Èë</b></td>
       <td align=right></td>
     </tr>
     <tr class=spacing> 
@@ -87,7 +87,7 @@
     <TR><TD class=Line1 colSpan=2></TD></TR>
     </tbody> 
   </table>  
-   <!-- éšè—æäº¤iframe -->
+   <!-- Òş²ØÌá½»iframe -->
    <iframe name='subframe' id="subframe" style='display:none'></iframe>
   
 </form>
@@ -104,13 +104,13 @@
 </tr>
 </table>
 
-<!-- å¯¼å…¥ç­‰å¾… -->
+<!-- µ¼ÈëµÈ´ı -->
  <div id="loading">	
-		<span  id="loading-msg"><img src="/images/loading2.gif">æ­£åœ¨å¯¼å…¥åº“ä½é…ç½®æ•°æ®ï¼Œè¯·ç¨å€™</span>
+		<span  id="loading-msg"><img src="/images/loading2.gif">ÕıÔÚµ¼Èë¿âÎ»ÅäÖÃÊı¾İ£¬ÇëÉÔºò</span>
  </div>
 
-<!-- ç»“æœå±•ç¤ºå¼¹å‡ºå±‚ -->
-<div id="divInfo" title="æ­£åœ¨å¯¼å…¥åº“ä½é…ç½®æ•°æ®ï¼Œè¯·ç¨å€™">
+<!-- ½á¹ûÕ¹Ê¾µ¯³ö²ã -->
+<div id="divInfo" title="ÕıÔÚµ¼Èë¿âÎ»ÅäÖÃÊı¾İ£¬ÇëÉÔºò">
      <DIV style="BORDER-BOTTOM: #bbbbbb 1px solid; width:100%;height:480px">
 	        <DIV id="content" style="OVERFLOW-y: auto;OVERFLOW-x: hidden; WIDTH: 100%px; HEIGHT: 480px">
 			      <div id="result">
@@ -124,10 +124,10 @@
 	  </div>  
 </div>
 <script language=javascript>
-var index=0; //æ§åˆ¶ä»resultListä¸­è¯»å–æ•°æ®çš„ä½ç½®   
-var timeId;  //å®šæ—¶å™¨
+var index=0; //¿ØÖÆ´ÓresultListÖĞ¶ÁÈ¡Êı¾İµÄÎ»ÖÃ   
+var timeId;  //¶¨Ê±Æ÷
 
-/*jQuery dialog åˆå§‹åŒ–*/
+/*jQuery dialog ³õÊ¼»¯*/
 $("#divInfo").dialog({   
 	autoOpen: false,
       	modal: true, 
@@ -138,7 +138,7 @@ $("#divInfo").dialog({
     });
 	     
 	     
-/*æäº¤è¯·æ±‚ï¼Œé€šè¿‡éšè—iframeæäº¤*/
+/*Ìá½»ÇëÇó£¬Í¨¹ıÒş²ØiframeÌá½»*/
 function dosubmit(obj) {
     if(check_form(document.frmMain,'excelfile')) {
     	$("#loading").css("display", "block");

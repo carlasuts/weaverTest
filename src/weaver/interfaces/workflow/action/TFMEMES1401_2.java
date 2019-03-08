@@ -31,6 +31,7 @@ import weaver.general.BaseBean;
 public class TFMEMES1401_2 implements Action {
 	
 	 private static final String url = "http://172.22.20.109:8080/MesWebService/reqems";
+	// http://172.22.16.170:8080/MesWebService/reqems ³ç´¨
 	
 	public String execute(RequestInfo request) {
 		try {

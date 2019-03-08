@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
 <%@ page import="weaver.general.Util,weaver.file.*,java.util.*,java.io.*" %>
 <%@ page import="weaver.join.hrm.in.IHrmImportAdapt"%>
 <%@ page import="weaver.file.*"%>
@@ -16,10 +16,10 @@
 <%
 	BaseBean bb = new BaseBean();
 	String sql = "";
-    FileUploadToPath fu = new FileUploadToPath(request) ;    // ä¸Šä¼ EXCELæ–‡ä»¶
-	String filename = fu.uploadFiles("excelfile") ;    //è·å–EXCELè·¯å¾„
+    FileUploadToPath fu = new FileUploadToPath(request) ;    // ÉÏ´«EXCELÎÄ¼ş
+	String filename = fu.uploadFiles("excelfile") ;    //»ñÈ¡EXCELÂ·¾¶
 	ExcelParse excelFile = new ExcelParse();
-	excelFile.init(filename) ;    //è¿›è¡ŒEXCELæ–‡ä»¶åˆå§‹åŒ–
+	excelFile.init(filename) ;    //½øĞĞEXCELÎÄ¼ş³õÊ¼»¯
 	
 	int recordercount = 0 ;
 	String error = "";
@@ -27,11 +27,11 @@
 	StringBuilder sb = new StringBuilder();
 	while( true ) {
 		recordercount ++ ;
-		//ä»¥ä¸‹ä¸€è¡Œä¸€è¡ŒæŒ‰åˆ—è¯»å–EXCELä¸­çš„æ•°æ®getValueæ–¹æ³•ä¸­çš„ç¬¬ä¸€ä¸ªå‚æ•°ä¸è¦å˜åŒ–ï¼Œå›ºå®šä¸º1ï¼Œç¬¬äºŒä¸ªå‚æ•°æ˜¯è¡Œå·ï¼Œç¬¬ä¸‰ä¸ªå‚æ•°æ˜¯åˆ—å·
-		if( recordercount == 1 ) continue ;  //ç¬¬ä¸€è¡Œä¸ºæ ‡é¢˜ï¼Œä¸€èˆ¬ä¸å¤„ç†
+		//ÒÔÏÂÒ»ĞĞÒ»ĞĞ°´ÁĞ¶ÁÈ¡EXCELÖĞµÄÊı¾İgetValue·½·¨ÖĞµÄµÚÒ»¸ö²ÎÊı²»Òª±ä»¯£¬¹Ì¶¨Îª1£¬µÚ¶ş¸ö²ÎÊıÊÇĞĞºÅ£¬µÚÈı¸ö²ÎÊıÊÇÁĞºÅ
+		if( recordercount == 1 ) continue ;  //µÚÒ»ĞĞÎª±êÌâ£¬Ò»°ã²»´¦Àí
 		
 		String c2 = Util.null2String( excelFile.getValue("1", ""+recordercount , "2" ) ).trim() ;
-        if( c2.equals("") ) break ;   //è¡¨ç¤ºå·²ç»æ˜¯æœ€åä¸€è¡Œï¼Œå¤„ç†ç»“æŸ
+        if( c2.equals("") ) break ;   //±íÊ¾ÒÑ¾­ÊÇ×îºóÒ»ĞĞ£¬´¦Àí½áÊø
         String c3 = "", c4 = "", c5 = "";
         c3 = Util.null2String( excelFile.getValue("1", ""+recordercount , "3" ) ).trim() ;
         c4 = Util.null2String( excelFile.getValue("1", ""+recordercount , "4" ) ).trim() ;
@@ -52,7 +52,7 @@
     }
 	
 	if(hasvalid){ 
-		out.println("<SCRIPT language=javascript>alert('æ•°æ®å¯¼å…¥æˆåŠŸ!')</SCRIPT>");
+		out.println("<SCRIPT language=javascript>alert('Êı¾İµ¼Èë³É¹¦!')</SCRIPT>");
 		out.println("<SCRIPT language=javascript>parent.window.returnValue='1';window.close();</SCRIPT>");
 	}
 	else{

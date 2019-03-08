@@ -37,7 +37,7 @@ if(type.equals("1")){
 	}
 	else{
 		if(cq.equals("0") && !sclx.equals("")){
-			sql = "select count(*) as no from formtable_main_91 where cq ='0' and tzlx = '"+tzlx+"'";
+			sql = "select count(*) as no from formtable_main_91 where cq ='0' and tzlx = '"+tzlx+"'  and custid = '"+ khh +"'  ";
 			rs.executeSql(sql);
 			result +="[";
 			rs.next();
@@ -47,7 +47,7 @@ if(type.equals("1")){
 			}
 		}
 		else{
-			sql = "select count(*) as no from formtable_main_91 where cq !='0' and tzlx = '"+tzlx+"'";
+			sql = "select count(*) as no from formtable_main_91 where cq !='0' and tzlx = '"+tzlx+"' and custid = '"+ khh +"' ";
 			rs.executeSql(sql);
 			result +="[";
 			rs.next();

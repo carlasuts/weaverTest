@@ -1,21 +1,22 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.sql.Connection,java.sql.DriverManager,java.sql.PreparedStatement,java.sql.ResultSet,weaver.general.Util"%>
+<%@ page language="java" contentType="text/html; charset=GBK"%>
+<%@ page
+	import="java.sql.Connection,java.sql.DriverManager,java.sql.PreparedStatement,java.sql.ResultSet,weaver.general.Util"%>
 <%@ page import="java.util.*"%>
-<%@ include file="/systeminfo/init_wev8.jsp"%>
+<%@ include file="/systeminfo/init.jsp"%>
 
 <jsp:useBean id="mysmt" class="weaver.conn.RecordSet" />
 <jsp:useBean id="bs" class="weaver.general.BaseBean"></jsp:useBean>
 <%
-	int requestid = Util.getIntValue(request.getParameter("requestid"),0);//è¯·æ±‚id
-	int workflowid = Util.getIntValue(request.getParameter("workflowid"), 0);//æµç¨‹id
-	int formid = Util.getIntValue(request.getParameter("formid"), 0);//è¡¨å•id
-	int isbill = Util.getIntValue(request.getParameter("isbill"), 0);//è¡¨å•ç±»å‹ï¼Œ1å•æ®ï¼Œ0è¡¨å•
-	int nodeid = Util.getIntValue(request.getParameter("nodeid"), 0);//æµç¨‹çš„èŠ‚ç‚¹id
+	int requestid = Util.getIntValue(request.getParameter("requestid"),0);//ÇëÇóid
+	int workflowid = Util.getIntValue(request.getParameter("workflowid"), 0);//Á÷³Ìid
+	int formid = Util.getIntValue(request.getParameter("formid"), 0);//±íµ¥id
+	int isbill = Util.getIntValue(request.getParameter("isbill"), 0);//±íµ¥ÀàĞÍ£¬1µ¥¾İ£¬0±íµ¥
+	int nodeid = Util.getIntValue(request.getParameter("nodeid"), 0);//Á÷³ÌµÄ½Úµãid
 	int userId = user.getUID();
 %>
 <script>
     jQuery(function () {
-        //ç¬¬äºŒä¸ªèŠ‚ç‚¹
+        //µÚ¶ş¸ö½Úµã
 		<%if(nodeid == 312){%>
 		    checkCustomize = function () {
 				var hrmid = "";
@@ -28,7 +29,7 @@
 	                return true;
             }
 		<%}else if(nodeid == 313){%>
-			//ç¬¬ä¸‰ä¸ªèŠ‚ç‚¹
+			//µÚÈı¸ö½Úµã
 			var uid = <%=userId%>;
 			jQuery("input[id*='field6189']").each(function (index){
 				var id = this.id.split("_")[1];
@@ -47,15 +48,15 @@
 					var hrmid = jQuery(this).val();
 					if(hrmid == uid){
 						if(jQuery("#field6471_" + id).val() == ""){
-							alert("æ ¹æœ¬åŸå› ä¸èƒ½ä¸ºç©º");
+							alert("¸ù±¾Ô­Òò²»ÄÜÎª¿Õ");
 							bok = false;
 						}
 						if(jQuery("#field6472_" + id).val() == ""){
-							alert("çº æ­£æªæ–½è®¡åˆ’ä¸èƒ½ä¸ºç©º");
+							alert("¾ÀÕı´ëÊ©¼Æ»®²»ÄÜÎª¿Õ");
 							bok = false;
 						}
 						if(jQuery("#field6192_" + id).val() == ""){
-							alert("è®¡åˆ’å®Œæˆæ—¥ä¸èƒ½ä¸ºç©º");
+							alert("¼Æ»®Íê³ÉÈÕ²»ÄÜÎª¿Õ");
 							bok = false;
 						}
 						if(!bok){

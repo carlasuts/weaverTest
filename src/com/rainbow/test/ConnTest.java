@@ -40,12 +40,12 @@ public class ConnTest {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = (Connection) DriverManager.getConnection("jdbc:oracle:thin:@172.16.20.6:1521:RPTDB", username,
 					password);
-			sql = "select * from  formtable_main_78 where requestid = '162075'";
+			sql = "select * from  USERS_SATISFACTION_RULE where WORKFLOWID = '82'";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 			rs.next();
-			String REELSIZE = rs.getString("REELQTY");
-			System.out.println(REELSIZE);
+			int USE_QTY = rs.getInt("USE_QTY");
+			System.out.println(USE_QTY);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

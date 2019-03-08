@@ -1,15 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=GBK" %> 
 <%@ page import="java.sql.Connection,java.sql.DriverManager,java.sql.PreparedStatement,java.sql.ResultSet,weaver.general.Util"%>
 <%@ page import="java.util.*" %>
-<%@ include file="/systeminfo/init_wev8.jsp" %>
+<%@ include file="/systeminfo/init.jsp" %>
 <jsp:useBean id="mysmt" class="weaver.conn.RecordSet"/>
 <jsp:useBean id="bs" class="weaver.general.BaseBean"></jsp:useBean>
 <%
-    int requestid = Util.getIntValue(request.getParameter("requestid"),0);//è¯·æ±‚id
-    int workflowid = Util.getIntValue(request.getParameter("workflowid"),0);//æµç¨‹id
-    int formid = Util.getIntValue(request.getParameter("formid"),0);//è¡¨å•id
-    int isbill = Util.getIntValue(request.getParameter("isbill"),0);//è¡¨å•ç±»åž‹ï¼Œ1å•æ®ï¼Œ0è¡¨å•
-    int nodeid = Util.getIntValue(request.getParameter("nodeid"),0);//æµç¨‹çš„èŠ‚ç‚¹id
+    int requestid = Util.getIntValue(request.getParameter("requestid"),0);//ÇëÇóid
+    int workflowid = Util.getIntValue(request.getParameter("workflowid"),0);//Á÷³Ìid
+    int formid = Util.getIntValue(request.getParameter("formid"),0);//±íµ¥id
+    int isbill = Util.getIntValue(request.getParameter("isbill"),0);//±íµ¥ÀàÐÍ£¬1µ¥¾Ý£¬0±íµ¥
+    int nodeid = Util.getIntValue(request.getParameter("nodeid"),0);//Á÷³ÌµÄ½Úµãid
 %>
 <script>
     jQuery(function () {

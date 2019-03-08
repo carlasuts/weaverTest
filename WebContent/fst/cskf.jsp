@@ -1,35 +1,35 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ include file="/systeminfo/init_wev8.jsp" %>
+<%@ page language="java" contentType="text/html; charset=GBK" %>
+<%@ include file="/systeminfo/init.jsp" %>
 <%@ taglib uri="/WEB-INF/weaver.tld" prefix="wea"%>
 <%@ page import="weaver.general.Util" %>
 <%@ page import="java.util.*" %>
 <jsp:useBean id="rs" class="weaver.conn.RecordSet" scope="page" />
 
 <HTML><HEAD>
-<LINK REL=stylesheet type=text/css HREF=/css/Weaver_wev8.css></HEAD>
-<SCRIPT language="javascript" src="/js/weaver_wev8.js"></script>
-<script language=javascript src="/js/jquery/jquery-1.4.2.min_wev8.js"></script>
+<LINK REL=stylesheet type=text/css HREF=/css/Weaver.css></HEAD>
+<SCRIPT language="javascript" src="/js/weaver.js"></script>
+<script language=javascript src="/js/jquery/jquery-1.4.2.min.js"></script>
 <%
 int userID = user.getUID();
 
 String pc = Util.null2String(request.getParameter("pc"));//PackageCode
-String customer = Util.null2String(request.getParameter("customer"));//瀹㈡埛
-String qb = Util.null2String(request.getParameter("qb"));//鏈熷埆
-String workcode = Util.null2String(request.getParameter("workcode"));//宸ュ彿
+String customer = Util.null2String(request.getParameter("customer"));//客户
+String qb = Util.null2String(request.getParameter("qb"));//期别
+String workcode = Util.null2String(request.getParameter("workcode"));//工号
 String sqlwhere = " where 1 = 1 ";
 //PackageCode
 if(!pc.equals("")){
 	sqlwhere += " and packagecode like '%" + pc + "%'";
 }
-//瀹㈡埛
+//客户
 if(!customer.equals("")){
 	sqlwhere += " and customer like '%" + customer + "%'";
 }
-//鏈熷埆
+//期别
 if(!qb.equals("")){
 	sqlwhere += " and qb like '%" + qb + "%'";
 }
-//宸ュ彿
+//工号
 if(!workcode.equals("")){
 	sqlwhere += " and a.workcode like '%" + workcode + "%'";
 }
@@ -44,17 +44,17 @@ String needfav ="1";
 String needhelp ="";
 %>
 <BODY>
-<%@ include file="/systeminfo/TopTitle_wev8.jsp" %>
-<%@ include file="/systeminfo/RightClickMenuConent_wev8.jsp" %>
+<%@ include file="/systeminfo/TopTitle.jsp" %>
+<%@ include file="/systeminfo/RightClickMenuConent.jsp" %>
 <%
 	RCMenu += "{"+SystemEnv.getHtmlLabelName(197,user.getLanguage())+",javascript:doSearch(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
-	RCMenu += "{瀵煎叆excel,javascript:doImportExcel(),_self} " ;
+	RCMenu += "{导入excel,javascript:doImportExcel(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
-	RCMenu += "{妯℃澘涓嬭浇,javascript:doDownload(),_self} " ;
+	RCMenu += "{模板下载,javascript:doDownload(),_self} " ;
 	RCMenuHeight += RCMenuHeightStep ;
 %>
-<%@ include file="/systeminfo/RightClickMenu_wev8.jsp" %>
+<%@ include file="/systeminfo/RightClickMenu.jsp" %>
 <table width=100% height=100% border="0" cellspacing="0" cellpadding="0">
 <colgroup>
 <col width="10">
@@ -78,18 +78,18 @@ String needhelp ="";
 			<td NOWRAP width='5%'>PackageCode</td>
 			<td class=FIELD width='15%'>
 			<input type=text id='pc' name='pc' value='<%=pc%>'></td>
-			<td NOWRAP width='5%'>瀹㈡埛</td>
+			<td NOWRAP width='5%'>客户</td>
 			<td class=FIELD width='25%'>
 			<input type=text id='customer' name='customer' value='<%=customer%>'></td>
-			<td NOWRAP width='5%'>鏈熷埆</td>
+			<td NOWRAP width='5%'>期别</td>
 			<td class=FIELD width='15%'>
 			<input type=text id='qb' name='qb' value='<%=qb%>'></td>
-			<td NOWRAP width='5%'>宸ュ彿</td>
+			<td NOWRAP width='5%'>工号</td>
 			<td class=FIELD width='15%'>
 			<input type=text id='workcode' name='workcode' value='<%=workcode%>'></td>
-			<td NOWRAP width='20%'><input type="button" value="鎼滅储" onclick="doSearch();">&nbsp;&nbsp;
-			<input type="button" value="瀵煎叆excel" onclick="doImportExcel();">&nbsp;&nbsp;
-			<input type="button" value="妯℃澘涓嬭浇" onclick="javascript:window.location.href='cskf.xls';"></td>
+			<td NOWRAP width='20%'><input type="button" value="搜索" onclick="doSearch();">&nbsp;&nbsp;
+			<input type="button" value="导入excel" onclick="doImportExcel();">&nbsp;&nbsp;
+			<input type="button" value="模板下载" onclick="javascript:window.location.href='cskf.xls';"></td>
 		</TR>
 		<TR class=Spacing><TD class=Line1 colspan=8></TD></TR>
 		</table>
@@ -106,13 +106,13 @@ String needhelp ="";
 		                         "		<sql backfields=\""+backfields+"\" sqlform=\""+fromSql+"\" sqlwhere=\""+Util.toHtmlForSplitPage(sqlWhere)+"\" sqlorderby=\""+orderby+"\" sqlprimarykey=\"a.id\" sqlsortway=\"desc\" sqlisdistinct=\"false\"/>"+
 		                         "		<head>"+
 								 "			<col width=\"10%\" text=\"PackageCode\" column=\"packagecode\" orderkey=\"packagecode\"  />"+
-								 "			<col width=\"10%\" text=\"瀹㈡埛\" column=\"customer\" orderkey=\"customer\"  />"+
-								 "			<col width=\"20%\" text=\"鏈熷埆\" column=\"qb\" orderkey=\"qb\"  />"+
-								 "			<col width=\"25%\" text=\"宸ュ彿\" column=\"workcode\" orderkey=\"workcode\"  />"+
-								 "			<col width=\"15%\" text=\"濮撳悕\" column=\"lastname\" orderkey=\"lastname\"  />"+
+								 "			<col width=\"10%\" text=\"客户\" column=\"customer\" orderkey=\"customer\"  />"+
+								 "			<col width=\"20%\" text=\"期别\" column=\"qb\" orderkey=\"qb\"  />"+
+								 "			<col width=\"25%\" text=\"工号\" column=\"workcode\" orderkey=\"workcode\"  />"+
+								 "			<col width=\"15%\" text=\"姓名\" column=\"lastname\" orderkey=\"lastname\"  />"+
 		                         "		</head>"+
 								 "		<operates width=\"20%\">";
-					tableString +=		 "    		<operate href=\"javascript:doDel()\"  text=\"鍒犻櫎\" target=\"_self\" index=\"0\"/>";
+					tableString +=		 "    		<operate href=\"javascript:doDel()\"  text=\"删除\" target=\"_self\" index=\"0\"/>";
 					tableString +=		 "		</operates>"+
 		                         " </table>";
 		         %>
@@ -136,11 +136,11 @@ String needhelp ="";
 </table>
 
 <script language=javascript>
-//鏌ヨ
+//查询
 function doSearch(){
 	document.frmmain.submit();
 }
-//瀵煎叆
+//导入
 function doImportExcel(){
 	var rvalue = window.showModalDialog("cskfexcel.jsp");
 	if(rvalue > 0){
@@ -151,7 +151,7 @@ function doDownload(){
 	window.location.href='cskf.xls';
 }
 function doDel(id){
-	var isdel = confirm("鐪熺殑瑕佸垹闄ゅ悧?");
+	var isdel = confirm("真的要删除吗?");
 	if(isdel){
 		document.frmmain.action="cskfoperation.jsp?type=del&id="+id;
 		document.frmmain.submit();	
@@ -159,6 +159,6 @@ function doDel(id){
 }
 </script>
 </body>
-<SCRIPT language="javascript" defer="defer" src="/js/JSDateTime/WdatePicker_wev8.js"></script>
-<SCRIPT language="javascript" defer="defer" src="/js/datetime_wev8.js"></script>
+<SCRIPT language="javascript" defer="defer" src="/js/JSDateTime/WdatePicker.js"></script>
+<SCRIPT language="javascript" defer="defer" src="/js/datetime.js"></script>
 </html>
