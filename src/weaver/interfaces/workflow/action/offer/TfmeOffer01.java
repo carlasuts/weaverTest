@@ -11,6 +11,7 @@ import weaver.soa.workflow.request.RequestInfo;
 
 public class TfmeOffer01 implements Action {
 
+	@Override
 	public String execute(RequestInfo request) {
 
 		try {
@@ -32,7 +33,7 @@ public class TfmeOffer01 implements Action {
 
 			}
 			e.writeLog("start");
-			e.writeLog("报价方式 QUOTATION_WAY" +QUOTATION_WAY);
+			e.writeLog("报价方式 QUOTATION_WAY" + QUOTATION_WAY);
 			String sql = "";
 			String workflowid = request.getWorkflowid();
 			int formid =BillUtil.getFormId(Integer.parseInt(workflowid));
