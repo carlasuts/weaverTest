@@ -18,7 +18,7 @@ import static weaver.interfaces.workflow.action.quotation.DataToC4C.*;
 
 /**
  * @author zong.yq
- * TODO: 节点后负责读取上传的附件
+ * TODO: 节点后负责读取上传的附件 如果此流程单涉及到退回 则先删除CRM中已经触发的预约申请单，然后在重新创建
  */
 public class ExcelOperationAction implements Action {
     private static BaseBean baseBean = new BaseBean();
@@ -35,7 +35,7 @@ public class ExcelOperationAction implements Action {
      */
     private static final String POSTFIX = "'";
     private static final String PREFIX1 = "https://my500472.c4c.saphybriscloud.cn/sap/c4c/odata/v1/c4codataapi/";
-    private static final String POSTFIX1 = "?$format=json";
+//    private static final String POSTFIX1 = "?$format=json";
     private String sql = "";
 
     @Override
@@ -45,18 +45,30 @@ public class ExcelOperationAction implements Action {
         int formId = Math.abs(request.getRequestManager().getFormid());
         // 申请人
         String applicant = "";
-        // CRM中获取人员信息地址
-        String employeeUrl = "";
         // CRM返回给OA的申请单的ID
         String tagValue = "";
         String filePath = fileOperating(requestId, formId);
         File file = new File(filePath);
+        // 获取流程中的数据
+        sql = "SELECT * FROM FORMTABLE_MAIN_" + formId + " WHERE REQUESTID = '" + requestId + "'";
+        rs.executeSql(sql);
+        if (rs.next()) {
+            applicant = rs.getString("REQMAN");
+            tagValue = rs.getString("TAG_VALUE");
+        }
+        // 判断tagValue字段是否为空 如果不为空 则说明此流程为退回流程 则先删掉已触发的CRM中的申请单
+        if (!"".equals(tagValue)) {
+            baseBean.writeLog("此流程已在CRM中创建过差旅事前申请单, tagValue值为: " + tagValue);
+            delete(tagValue);
+        }
+        String businessPartnerId =  getCreatorBp(applicant);
+        baseBean.writeLog("当前申请人的BP编号: " + businessPartnerId);
         try {
             String[][] result = getData(file, 1);
             int rowLength = result.length;
             List<String> list = new ArrayList<String>(rowLength);
             for (int i = 0; i < rowLength; i++) {
-                String cust = "", startTime = "", endTime = "", project = "", partner = "", participant = "";
+                String cust = "", startTime = "", endTime = "", project = "", partner = "", participant = "", location = "";
                 Map<Integer, String> map = new HashMap<Integer, String>(result[i].length);
                 for (int j = 0; j < result[i].length; j ++) {
                     map.put(j, result[i][j]);
@@ -82,31 +94,19 @@ public class ExcelOperationAction implements Action {
                         case 5:
                             participant = entry.getValue();
                             break;
+                        case 6:
+                            location = entry.getValue();
                         default:
                             break;
                     }
                 }
-                // 获取流程中的数据
-                RecordSet rs = new RecordSet();
-                sql = "SELECT * FROM FORMTABLE_MAIN_" + formId + " WHERE REQUESTID = '" + requestId + "'";
-                rs.executeSql(sql);
-                if (rs.next()) {
-                    applicant = rs.getString("REQMAN");
-                    tagValue = rs.getString("TAG_VALUE");
-                }
-                String businessPartnerId =  getCreatorBp(applicant);
-                baseBean.writeLog("当前申请人的BP编号: " + businessPartnerId);
-                JSONObject req = createJson(businessPartnerId, cust, startTime, endTime, project, partner, participant);
+                // 生成json对象
+                JSONObject req = createJson(businessPartnerId, cust, startTime, endTime, project, partner, participant, location);
                 baseBean.writeLog("req: " + req.toString());
-                if (!"".equals(tagValue)) {
-                    baseBean.writeLog("此流程已在CRM中创建过差旅事前申请单");
-                } else {
-                    baseBean.writeLog("此流程未在CRM中创建过差旅事前申请单");
-                    tagValue = doCreate(req, requestId, formId);
-                    list.add(tagValue);
-                }
+                tagValue = doCreate(req);
+                list.add(tagValue);
             }
-            updateTagValue(list);
+            updateTagValue(list, requestId, formId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,11 +143,12 @@ public class ExcelOperationAction implements Action {
      * @param project 主题
      * @param partner 同行人
      * @param participant 参与人
+     * @param location 地点
      * @return
      */
-    private JSONObject createJson (String businessPartnerID, String cust, String startTime, String endTime, String project, String partner, String participant) {
+    private JSONObject createJson (String businessPartnerID, String cust, String startTime, String endTime, String project, String partner, String participant, String location) {
         // 先将时间转换成毫秒
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = null;
         Date endDate = null;
         try {
@@ -169,6 +170,7 @@ public class ExcelOperationAction implements Action {
             req.put("OwnerPartyID", businessPartnerID);
             req.put("DocumentType", "0001");
             req.put("Category", "0001");
+            req.put("Location", location);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,24 +181,22 @@ public class ExcelOperationAction implements Action {
      * 退回时执行的更新操作
      * @param tagValue
      */
-    private void doUpdate (String tagValue) {
-        String url = PREFIX1 + tagValue + POSTFIX1;
-        String token = doGet(url, USERNAME, PASSWORD);
-        baseBean.writeLog("当前获取单子的token为: " + token);
-        // 要更新的差旅事前申请单地址
-        url = PREFIX1 + tagValue;
-        baseBean.writeLog("需要更新的地址为: " + url);
-//        int code = doPatch(token);
-    }
+//    private void doUpdate (String tagValue) {
+//        String url = PREFIX1 + tagValue + POSTFIX1;
+//        String token = doGet(url, USERNAME, PASSWORD);
+//        baseBean.writeLog("当前获取单子的token为: " + token);
+//        // 要更新的差旅事前申请单地址
+//        url = PREFIX1 + tagValue;
+//        baseBean.writeLog("需要更新的地址为: " + url);
+////        int code = doPatch(token);
+//    }
 
     /**
      * 此方法用于创建CRM中差旅事前申请单
      * 首先通过doGetBP获取申请在CRM中的BP编号，再创建申请单
      * @param req 向CRM中发送的json数据
-     * @param requestId OA中的请求ID
-     * @param formId OA表ID
      */
-    private String doCreate (JSONObject req, String requestId, int formId) {
+    private String doCreate (JSONObject req) {
         RequestInfo request = new RequestInfo();
         // 首先获取token 相当于一个密码
         String token = doGet(URL, USERNAME, PASSWORD);
@@ -212,11 +212,37 @@ public class ExcelOperationAction implements Action {
     }
 
     /**
+     * 删除此流程已经在CRM中申请的单子
+     * @param tagValue CRM返回给OA的所有的申请ID
+     */
+    private void delete (String tagValue) {
+        RequestInfo request = new RequestInfo();
+        String[] tagValues = tagValue.split(",");
+        String token = doGet(URL, USERNAME, PASSWORD);
+        for (String newTagValue : tagValues) {
+            String url = PREFIX1 + newTagValue.trim();
+            baseBean.writeLog("url为: " + url);
+            int code = doDelete(token, url, USERNAME, PASSWORD);
+            baseBean.writeLog(code);
+            if (code == 204) {
+                baseBean.writeLog("删除成功");
+            } else {
+                request.getRequestManager().setMessageid("Exception");
+                request.getRequestManager().setMessagecontent("删除失败，请联系管理员");
+            }
+        }
+    }
+
+    /**
      * 更新OA系统中的tagValue值
      * @param list 因为附件中可能会存在多条记录，CRM返回的tagValue也是多条，因而需要把所有的tagValue拼接起来存储
+     * @param requestId OA生成的请求ID
+     * @param formId 此流程的主表ID
      */
-    private void updateTagValue (List<String> list) {
-        baseBean.writeLog("list的值为: " + list.toString());
+    private void updateTagValue (List<String> list, String requestId, int formId) {
+        String tagValue = list.toString().replace("[","").replace("]","");
+        sql = "UPDATE FORMTABLE_MAIN_" + formId + " SET TAG_VALUE = '" + tagValue + "' WHERE REQUESTID = '" + requestId + "'";
+        rs.executeSql(sql);
     }
 
     /**
@@ -349,7 +375,7 @@ public class ExcelOperationAction implements Action {
                         }
                     } else {
                         if (null != date) {
-                            value = new SimpleDateFormat("yyyy-MM-dd").format(date);
+                            value = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
                         } else {
                             value = "";
                         }

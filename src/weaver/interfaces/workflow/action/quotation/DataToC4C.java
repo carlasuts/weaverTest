@@ -230,15 +230,21 @@ public class DataToC4C {
      * @return code 状态码 204即为成功
      */
     public static Integer doDelete (String token, String url, String username, String password) {
+        baseBean.writeLog("token: " + token + ", url: " + url + ", username: " + username + ", password: " + password);
+        baseBean.writeLog("doDelete开始运行");
         int code = 0;
         HttpResponse response = null;
+        baseBean.writeLog("初始化HttpResponse");
         HttpDelete httpDelete = new HttpDelete(url);
+        baseBean.writeLog("初始化HttpDelete");
         // 设置用户验证
         httpDelete.addHeader("Authorization", getAuthor(username, password));
         // 设置token
         httpDelete.addHeader("x-csrf-token", token);
+        baseBean.writeLog("设置头部");
         try {
             response = defaultHttpClient.execute(httpDelete);
+            baseBean.writeLog("执行删除操作");
         } catch (ClientProtocolException e) {
             baseBean.writeLog("协议出错");
             e.printStackTrace();

@@ -76,6 +76,16 @@ public class QuotationC4CCreateAction implements Action {
         String tagValue = "";
         // 报价备注
         String quotationNote = "";
+        // 外形
+        String shape = "";
+        // 月需求量
+        String onDemand = "";
+        // 圆片尺寸
+        String waferSize = "";
+        // 键合丝数
+        String wireBonding = "";
+        // 芯片数
+        String chipNumber = "";
 
         String objectId = "";
         String url = "";
@@ -122,7 +132,23 @@ public class QuotationC4CCreateAction implements Action {
             tagValue = rs.getString("TAG_VALUE");
             // 报价备注
             quotationNote = rs.getString("QUOTATION_NOTE");
+            // 外形
+            shape = rs.getString("SHAPE");
+            // 月需求量
+            onDemand = ("".equals(rs.getString("ON_DEMAND"))) ? "0" : rs.getString("ON_DEMAND");
+            // 圆片尺寸
+            waferSize = ("".equals(rs.getString("WAFER_SIZE"))) ? "0" : rs.getString("WAFER_SIZE");
+            // 键合丝数
+            wireBonding = ("".equals(rs.getString("WIRE_BONDING"))) ? "0" : rs.getString("WIRE_BONDING");
+            // 芯片数
+            chipNumber = ("".equals(rs.getString("CHIP_NUMBER"))) ? "0" : rs.getString("CHIP_NUMBER");
         }
+        // 键合丝种类ID转换成名字
+        sql = "SELECT NAME FROM MD_SD_WIRE WHERE ID = '" + typesOfBondingWire + "'";
+        rs.executeSql(sql);
+        rs.next();
+        typesOfBondingWire = rs.getString("NAME");
+        baseBean.writeLog("typesOfBondingWire: " + typesOfBondingWire);
 
         if ("0".equals(currency)) {
             currency = "CNY";
@@ -156,6 +182,13 @@ public class QuotationC4CCreateAction implements Action {
             req.put("EmployeeResponsiblePartyID", businessPartnerID);
             req.put("WireTypeText", typesOfBondingWire);
             req.put("QuoteCondition", quotationNote);
+            req.put("Zshape",shape);
+            req.put("Zyuexuqiuliang", onDemand);
+            req.put("Zyuanpianchicun", waferSize);
+            req.put("Zjianhesishu", wireBonding);
+            req.put("Zxinpianshu", chipNumber);
+
+            baseBean.writeLog("当前传过去的值为：" + req.toString());
 
             String token = doGet(URL, USERNAME, PASSWORD);
             baseBean.writeLog("当前获取的token为: " + token);
